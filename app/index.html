@@ -1,0 +1,247 @@
+<!doctype html>
+<html class="no-js" lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Vertex Policy Toolkit</title>
+
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Place favicon.ico in the root directory -->
+
+    <!-- build:css styles/vendor.css -->
+    <link rel="stylesheet" href="styles/base/all.css">
+    <link rel="stylesheet" href="styles/base/base.css">
+    <link rel="stylesheet" href="styles/base/theme.css">
+
+    <!-- bower:css -->
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!-- build:css styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+
+    <!-- build:js scripts/vendor/modernizr.js -->
+    <script src="/bower_components/modernizr/modernizr.js"></script>
+    <!-- endbuild -->
+  </head>
+  <body>
+
+    <div class="overlay">
+      <img id="loading" src="images/loading.png">
+    </div>
+
+    <header>
+      <img class="back-icon" src="images/back.png" onclick="back()">
+      <img class="search-icon" src="images/search.png">
+      <img class="refresh-icon" src="images/refresh.png">
+      <h1>Administrator</h1>
+    </header>
+    <div class="form-group searchbox">
+      <input type="search" class="form-control" id="usr" placeholder="Search">
+    </div>
+
+    <center>
+    <img class="logo" src="images/logo.png">
+  </center>
+
+  <section data-route="main">
+    <center>
+    <div class="col-xs-6">
+     <a href="#/all"><img class="icons" src="images/icon-gapp.png"><div>GAPP Toolkit</div></a>
+    </div>
+  </center>
+  </section>
+
+  <section data-route="all">
+    <div class="container">
+
+    <div class="btn-holder">
+      <img class="newcat-icon" src="images/newcat.png">
+      <img class="newfile-icon" src="images/newfile.png">
+    </div>
+
+    <div class="col-xs-12">
+      <h3 class="head1">All files</h3>
+    </div>
+
+      <div class="col-xs-6 topbartext">Name<img class="arrowdown-icon" src="images/arrow-down.png">
+      </div>
+      <div class="col-xs-4 topbartext">Date<img class="arrowdown-icon" src="images/arrow-down.png">
+      </div>
+      <div class="col-xs-2 topbartext">Size<img class="arrowdown-icon" src="images/arrow-down.png">
+      </div>
+
+      <div class="content col-xs-12">
+      </div>
+
+    <div class="midbreak col-xs-12">
+      <h3 class="head2">Unassigned</h3>
+    </div>
+
+    <div class="uncontent">
+    </div>
+
+    </div>
+
+  </section>
+
+  <section data-route="sub">
+
+    <div class="container">
+
+    <div class="btn-holder">
+      <img class="newsub-icon" src="images/newsub.png">
+      <img class="newfile-icon" src="images/newfile.png">
+    </div>
+
+    <div class="col-xs-12">
+      <h3 class="head1">All files > <span class="subhead"></span></h3>
+    </div>
+
+      <div class="col-xs-6 topbartext">Name<img class="arrowdown-icon" src="images/arrow-down.png">
+      </div>
+      <div class="col-xs-4 topbartext">Updated<img class="arrowdown-icon" src="images/arrow-down.png">
+      </div>
+      <div class="col-xs-2 topbartext">Size<img class="arrowdown-icon" src="images/arrow-down.png">
+      </div>
+
+      <div class="subcontent col-xs-12">
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <section data-route="data">
+
+    <div class="container">
+
+    <div class="btn-holder">
+      <img class="newfile-icon" src="images/newfile.png">
+    </div>
+
+    <div class="col-xs-12">
+      <h3 class="head1">All files > <span class="datahead"></span></h3>
+    </div>
+
+      <div class="col-xs-6 topbartext">Name<img class="arrowdown-icon" src="images/arrow-down.png">
+      </div>
+      <div class="col-xs-4 topbartext">Updated<img class="arrowdown-icon" src="images/arrow-down.png">
+      </div>
+      <div class="col-xs-2 topbartext">Size<img class="arrowdown-icon" src="images/arrow-down.png">
+      </div>
+
+      <div class="datacontent col-xs-12">
+      </div>
+
+</div>
+
+  </section>
+
+  <div id="addcat" title="Add category">
+    <div class="form-group">
+      <label for="usr">Name:</label>
+    <input type="text" class="form-control" id="">
+    </div>
+
+    <center>
+    <img class="save-icon" src="images/save.png">
+  </center>
+  </div>
+
+  <div id="addsub" title="Add sub category">
+    <div class="form-group">
+      <label for="usr">Name:</label>
+    <input type="text" class="form-control" id="">
+    </div>
+
+    <center>
+    <img class="save-icon" src="images/save.png">
+  </center>
+  </div>
+
+  <div id="editcat" title="Edit category">
+    <div class="form-group">
+      <label for="usr">Name:</label>
+    <input type="text" class="form-control" id="">
+    </div>
+
+    <div id="editsubcat" title="Edit sub category">
+      <div class="form-group">
+        <label for="usr">Name:</label>
+      <input type="text" class="form-control" id="">
+    </div>
+
+    <div id="editfile" title="Edit file">
+      <div class="form-group">
+        <label for="usr">Name:</label>
+      <input type="text" class="form-control" id="">
+    </div>
+
+    <div class="form-group">
+      <label for="usr">PDF:</label>
+    <input type="file" class="form-control" id="">
+  </div>
+  <div class="form-group">
+    <label for="usr">Search Tags:</label>
+    <textarea class="form-control" rows="5" id=""></textarea>
+    Seperate tags with a comma
+  </div>
+
+    <center>
+    <img class="save-icon" src="images/save.png">
+  </center>
+  </div>
+
+  <div id="addfile" title="Add file">
+    <div class="form-group">
+      <label for="usr">Name:</label>
+    <input type="text" class="form-control" id="">
+    </div>
+    <div class="form-group">
+      <label for="usr">PDF:</label>
+    <input type="file" class="form-control" id="">
+    </div>
+    <div class="form-group">
+      <label for="usr">Search Tags:</label>
+      <textarea class="form-control" rows="5" id=""></textarea>
+      Seperate tags with a comma
+    </div>
+
+    <center>
+    <img class="save-icon" src="images/save.png">
+  </center>
+  </div>
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="/bower_components/jquery-ui/jquery-ui.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js scripts/plugins.js -->
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/affix.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/alert.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/dropdown.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/modal.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/transition.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/button.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/popover.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/carousel.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/scrollspy.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/collapse.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/tab.js"></script>
+    <script src="scripts/director.min.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js scripts/survey.js -->
+    <!-- endbuild -->
+    <!-- build:js scripts/main.js -->
+    <script src="scripts/main.js"></script>
+    <!-- endbuild -->
+  </body>
+</html>

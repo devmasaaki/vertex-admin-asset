@@ -1,0 +1,10 @@
+{
+  "type" : "html",
+  "shelf_title" : "Shelf Title is not used in MI",
+  "content_keyfile" : "index.html",
+  "property_supported_orientations" : "B",
+  "property_html_showBackButton" : "YES",
+  "property_support_fullscreen" : "NO",
+  "creator" : "SOAP/0.2",
+  "verificationId" : 1472085556789
+}
