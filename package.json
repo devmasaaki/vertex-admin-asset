@@ -9,7 +9,7 @@
     "babel-register": "^6.5.2",
     "browser-sync": "^2.2.1",
     "del": "^1.1.1",
-    "gulp": "^3.9.0",
+    "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.0.1",
     "gulp-babel": "^6.1.1",
     "gulp-cache": "^0.4.2",
@@ -18,7 +18,6 @@
     "gulp-htmlmin": "^1.3.0",
     "gulp-if": "^2.0.0",
     "gulp-imagemin": "^2.2.1",
-    "gulp-it-build": "git+ssh://git@bitbucket.org/healthinteract/gulp-it-build.git",
     "gulp-load-plugins": "^0.10.0",
     "gulp-plumber": "^1.0.1",
     "gulp-sass": "^2.0.0",
@@ -27,6 +26,7 @@
     "gulp-uglify": "^1.1.0",
     "gulp-useref": "^3.0.0",
     "main-bower-files": "^2.5.0",
+    "run-sequence": "^2.1.0",
     "wiredep": "^2.2.2"
   },
   "eslintConfig": {
@@ -43,6 +43,9 @@
     }
   },
   "dependencies": {
+    "babel-cli": "^6.24.1",
+    "gulp-cli": "^1.3.0",
+    "gulp-it": "^1.0.3",
     "jquery-router-plugin": "^1.0.0"
   }
 }
