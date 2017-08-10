@@ -41,7 +41,7 @@ $('document').ready(function() {
 
       if (categories[i].deleted == false) {
         //assigned
-        $('.content').append('<div class="dragit col-xs-12"><div class="col-xs-6 no-pad" type="category" onclick="subnav(' + i + ')"><img class="folder-icon" src="images/folder.png">' + categories[i].name + '</div><div class="col-xs-4">' + categories[i].createdAt + '</div><div class="col-xs-2">' + size + ' Files</div><img class=" edit-icon" catindex="' + i + '" src="images/edit.png"></div>');
+        $('.content').append('<div class="dragit col-xs-12"><div class="col-xs-6 no-pad assigned" type="category" dataid="' + i + '" onclick="subnav(' + i + ')"><img class="folder-icon" src="images/folder.png">' + categories[i].name + '</div><div class="col-xs-4">' + categories[i].createdAt + '</div><div class="col-xs-2">' + size + ' Files</div><img class=" edit-icon" catindex="' + i + '" src="images/edit.png"></div>');
       } else {
         //unassigned
       }
@@ -50,7 +50,7 @@ $('document').ready(function() {
     //unassigned subcategories
     for (i = 0; i < unassigned_subcategories.length; i++){
       var size = unassigned_subcategories[i].items.length
-      $('.uncontent').append('<div class="dragit col-xs-12"><div class="col-xs-6 no-pad unassigned type="sub" dataid="' + i + '" onclick="subnav(' + i + ')"><img class="folder-icon" src="images/folder.png">' + unassigned_subcategories[i].name + '</div><div class="col-xs-4">' + unassigned_subcategories[i].createdAt + '</div><div class="col-xs-2">' + size + ' Files</div><img class=" edit-icon" catindex="' + i + '" src="images/edit.png"></div>');
+      $('.uncontent').append('<div class="dragit col-xs-12"><div class="col-xs-6 no-pad unassigned" type="sub" dataid="' + i + '"><img class="folder-icon" src="images/folder.png">' + unassigned_subcategories[i].name + '</div><div class="col-xs-4">' + unassigned_subcategories[i].createdAt + '</div><div class="col-xs-2">' + size + ' Files</div><img class=" edit-icon" catindex="' + i + '" src="images/edit.png"></div>');
     }
 
     //unassigned items
@@ -70,18 +70,18 @@ $('document').ready(function() {
     });
 
     var source, target;
-    $( '.no-pad[type="unassigned"]' ).draggable({
+    $( '.no-pad.unassigned' ).draggable({
       drag: function() {
         source = $(this);
       }
     });
 
-    $( '.no-pad' ).droppable({
+    $( '.no-pad.assigned' ).droppable({
       drop: function() {
         target = $(this);
         if ((source.attr('type') == 'item' || source.attr('type') == 'sub') && target.attr('type') == 'category') {
           var getdata = $( 'body' ).data();
-          var cat_id = target.attr('catindex');
+          var cat_id = target.attr('dataid');
           var sub_item_id = source.attr('dataid');
 
           var category = categories[cat_id];
@@ -91,6 +91,7 @@ $('document').ready(function() {
 
             var dragItem = {
               id: sub_item.id,
+              assigned:true,
               //title: newTitle
               category: {
                 id: category.id, //category_id
@@ -105,15 +106,17 @@ $('document').ready(function() {
             });
           } else if (source.attr('type') == 'sub') {
             sub_item = unassigned_subcategories[sub_item_id];
-
             var dragSub = {
               id: sub_item.id,
+              assigned: true,
               //title: newTitle
-              category: {
+              parent: {
                 id: category.id, //category_id
                 type: 'categories'
               }
             }
+            console.log('dragitem')
+            console.log(dragSub);
             yao.updateCategory(dragSub).then(function (result) {
               refreshAll(all);
             }).catch(function (error) {
