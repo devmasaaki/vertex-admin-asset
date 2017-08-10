@@ -227,11 +227,12 @@ $('document').ready(function() {
     var category = categories[cat_id];
     var sub_category = category.subcategories[sub_id];
 
-    $('.datahead').append('<a href="/#/sub">' + category.name + '</a> > ' + sub_category.name);
+    $('.datahead').append('<a href="#/sub">' + category.name + '</a> > ' + sub_category.name);
 
     for (i = 0; i < sub_category.items.length; i++) {
       if (sub_category.items[i].deleted == false) {
-        $('.datacontent').append('<div class="dragit col-xs-12"><a href="' + sub_category.items[i].file.url + '"><div class="col-xs-6 no-pad"><img class="folder-icon" src="images/pdficon.png">' + sub_category.items[i].title + '</div></a><div class="col-xs-4">' + sub_category.items[i].createdAt + '</div><div class="col-xs-2">' + sub_category.items[i].content + '</div><img class="edit-icon" itemindex="' + i + '" src="images/edit.png"></div>');
+        var size = sub_category.items[i].size ? sub_category.items[i].size : '0M';
+        $('.datacontent').append('<div class="dragit col-xs-12"><a href="' + sub_category.items[i].file.url + '"><div class="col-xs-6 no-pad"><img class="folder-icon" src="images/pdficon.png">' + sub_category.items[i].title + '</div></a><div class="col-xs-4">' + sub_category.items[i].createdAt + '</div><div class="col-xs-2">' + size + '</div><img class="edit-icon" itemindex="' + i + '" src="images/edit.png"></div>');
       }
     }
 
@@ -424,7 +425,7 @@ $('document').ready(function() {
     var file_name = $('#file_name1').val();
     var file_tags = $('#file_tags1').val();
     var getdata = $( 'body' ).data();
-    vcat_id = getdata.cat_id;
+    var cat_id = getdata.cat_id;
     var sub_id = getdata.sub_id;
     var item_index = getdata.item_id;
 
