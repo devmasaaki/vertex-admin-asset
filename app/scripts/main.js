@@ -56,7 +56,7 @@ $('document').ready(function() {
     //unassigned items
     for (i = 0; i < unassigned_items.length; i++){
       // size = unassigned_items[i].filesize
-      var size  = "2M"
+      var size  = '2M'
       $('.uncontent').append('<div class="dragit col-xs-12"><div class="col-xs-6 no-pad unassigned" type="item" dataid="' + i + '"><img class="folder-icon" src="images/pdficon.png">' + unassigned_items[i].title + '</div><div class="col-xs-4">' + unassigned_items[i].createdAt + '</div><div class="col-xs-2">' + size + ' </div><img itemindex="' + i + '" class="edit-icon edit-item" itemindex="' + i + '" src="images/edit.png"></div>');
     }
 
@@ -101,7 +101,7 @@ $('document').ready(function() {
             yao.updateItem(dragItem).then(function (result) {
               refreshAll(all);
             }).catch(function (error) {
-              alert("Can't update Item from API");
+              alert('Can\'t update Item from API');
               console.log(error);
             });
           } else if (source.attr('type') == 'sub') {
@@ -120,7 +120,7 @@ $('document').ready(function() {
             yao.updateCategory(dragSub).then(function (result) {
               refreshAll(all);
             }).catch(function (error) {
-              alert("Can't update Item from API");
+              alert('Can\'t update Item from API');
               console.log(error);
             });
           }
@@ -211,7 +211,7 @@ $('document').ready(function() {
           yao.updateItem(dragItem).then(function (result) {
             refreshAll(sub);
           }).catch(function (error) {
-            alert("Can't update Item from API");
+            alert('Can\'t update Item from API');
             console.log(error);
           });
         }
@@ -231,7 +231,7 @@ $('document').ready(function() {
 
     for (i = 0; i < sub_category.items.length; i++) {
       if (sub_category.items[i].deleted == false) {
-        var size = sub_category.items[i].size ? sub_category.items[i].size : '0M';
+        var size = sub_category.items[i].size ? sub_category.items[i].size : '2M';
         $('.datacontent').append('<div class="dragit col-xs-12"><a href="' + sub_category.items[i].file.url + '"><div class="col-xs-6 no-pad"><img class="folder-icon" src="images/pdficon.png">' + sub_category.items[i].title + '</div></a><div class="col-xs-4">' + sub_category.items[i].createdAt + '</div><div class="col-xs-2">' + size + '</div><img class="edit-icon" itemindex="' + i + '" src="images/edit.png"></div>');
       }
     }
@@ -268,7 +268,7 @@ $('document').ready(function() {
       $('#addcat').dialog('close');
       refreshAll(all);
     }).catch(function (error) {
-      alert("Can't create category from API");
+      alert('Can\'t create category from API');
       console.log(error);
     });
   }
@@ -290,7 +290,7 @@ $('document').ready(function() {
       $('#editcat').dialog('close');
       refreshAll(all);
     }).catch(function (error) {
-      alert("Can't update category from API");
+      alert('Can\'t update category from API');
       console.log(error);
     });
   }
@@ -309,7 +309,7 @@ $('document').ready(function() {
       $('#editcat').dialog('close');
       refreshAll(all);
     }).catch(function (error) {
-      alert("Can't delete category from API");
+      alert('Can\'t delete category from API');
       console.log(error);
     });
   }
@@ -326,7 +326,7 @@ $('document').ready(function() {
       $('#addsub').dialog('close');
       refreshAll(sub);
     }).catch(function (error) {
-      alert("Can't create subcategory from API");
+      alert('Can\'t create subcategory from API');
       console.log(error);
     });
   }
@@ -354,7 +354,7 @@ $('document').ready(function() {
       $('#editsub').dialog('close');
       refreshAll(sub);
     }).catch(function (error) {
-      alert("Can't update subcategory from API");
+      alert('Can\'t update subcategory from API');
       console.log(error);
     });
   }
@@ -375,7 +375,7 @@ $('document').ready(function() {
       $('#editsub').dialog('close');
       refreshAll(sub);
     }).catch(function (error) {
-      alert("Can't delete subcategory from API");
+      alert('Can\'t delete subcategory from API');
       console.log(error);
     });
   }
@@ -413,7 +413,7 @@ $('document').ready(function() {
         }
       },
       error: function(er) {
-        alert("Can't create item from API");
+        alert('Can\'t create item from API');
       }
     });
 
@@ -451,7 +451,7 @@ $('document').ready(function() {
         refreshAll(sub);
       }
     }).catch(function (error) {
-      alert("Can't update item from API");
+      alert('Can\'t update item from API');
       console.log(error);
     });
   }
@@ -482,7 +482,7 @@ $('document').ready(function() {
         refreshAll(sub);
       }
     }).catch(function (error) {
-      alert("Can't delete item from API");
+      alert('Can\'t delete item from API');
       console.log(error);
     });
   }
@@ -512,7 +512,7 @@ $('document').ready(function() {
   function refreshAll(callback) {
     yao.assetData(1).then(function (assetData) {
       categories = assetData.categories;
-      console.log("categories1");
+      console.log('categories1');
       console.log(categories);
 
       yao.getUnassignedSubCategories(1).then(function (data) {
@@ -534,17 +534,17 @@ $('document').ready(function() {
           console.log('unassigned_items3');
           console.log(unassigned_items);
         }).catch(function (error) {
-          alert("Can't get UnassignedItems from API");
+          alert('Can\'t get UnassignedItems from API');
           console.log(error);
         });
 
       }).catch(function (error) {
-        alert("Can't get UnassignedSubCategories from API");
+        alert('Can\'t get UnassignedSubCategories from API');
         console.log(error);
       });
 
     }).catch(function (error) {
-      alert("Can't get categories from API");
+      alert('Can\'t get categories from API');
       console.log(error);
     });
   }
@@ -563,11 +563,11 @@ $('.newcat-icon').click(function() {
 });
 
 $('.newfile-icon').click(function() {
-  $("#asset_id").val('');
-  $("#category_id").val('');
-  $("#item_title").val('');
-  $("#item_file").val('');
-  $("#item_tags").val('');
+  $('#asset_id').val('');
+  $('#category_id').val('');
+  $('#item_title').val('');
+  $('#item_file').val('');
+  $('#item_tags').val('');
   $('#addfile').dialog();
 });
 
