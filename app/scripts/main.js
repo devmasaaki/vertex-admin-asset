@@ -563,6 +563,11 @@ $('.newcat-icon').click(function() {
 });
 
 $('.newfile-icon').click(function() {
+  $("#asset_id").val('');
+  $("#category_id").val('');
+  $("#item_title").val('');
+  $("#item_file").val('');
+  $("#item_tags").val('');
   $('#addfile').dialog();
 });
 
