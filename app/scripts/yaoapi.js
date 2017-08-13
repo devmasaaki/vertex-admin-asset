@@ -7,7 +7,7 @@ e[u][0].call(l.exports,function(t){var n=e[u][1][t]
 return i(n||t)},l,l.exports,t,e,n,r)}return n[u].exports}for(var o='function'==typeof require&&require,u=0;u<r.length;u++)i(r[u])
 return i}({1:[function(t,e,n){e.exports=t('./lib/axios')},{'./lib/axios':3}],2:[function(t,e,n){(function(n){'use strict'
 var r=t('./../utils'),i=t('./../helpers/buildURL'),o=t('./../helpers/parseHeaders'),u=t('./../helpers/transformData'),a=t('./../helpers/isURLSameOrigin'),s='undefined'!=typeof window&&window.btoa||t('./../helpers/btoa'),c=t('../helpers/settle')
-e.exports=function(e,l,f){var p=f.data,h=f.headers
+e.exports=function(e,l,f){var p=f.data,h=f.headers 
 r.isFormData(p)&&delete h['Content-Type']
 var d=new XMLHttpRequest,v='onreadystatechange',y=!1
 if('test'===n.env.NODE_ENV||'undefined'==typeof window||!window.XDomainRequest||'withCredentials'in d||a(f.url)||(d=new window.XDomainRequest,v='onload',y=!0,d.onprogress=function(){},d.ontimeout=function(){}),f.auth){var g=f.auth.username||'',m=f.auth.password||''
