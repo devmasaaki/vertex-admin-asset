@@ -170,7 +170,8 @@ input[type=search] {
 #editcat,
 #editsub,
 #editfile,
-#addfile{
+#addfile,
+#msg_info{
   display: none;
 }
 
@@ -233,4 +234,12 @@ input[type=search] {
   -webkit-animation:spin 1s linear infinite;
   -moz-animation:spin 1s linear infinite;
   animation:spin 1s linear infinite;
+}
+
+.ui-dialog .ui-dialog-titlebar-close{
+  background-image:url("../images/close.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-color: inherit !important;
+  border: none; 
 }

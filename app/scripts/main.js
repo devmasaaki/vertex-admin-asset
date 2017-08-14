@@ -6,6 +6,7 @@ var unassigned_items = [];
 var yao = new Yao.YaoApi();
 var step = 0;
 var drag = false;
+var dialog_effect = { modal: true, show: {effect: 'fade', duration: 500}, hide:{effect: 'explode', duration: 500}};
 $('body' ).data('asset_id', 1);
 
 $('document').ready(function() {
@@ -94,20 +95,20 @@ $('document').ready(function() {
           var getdata = $('body').data();
           var category_index = getdata.category_index;
           $('#cat_name1').val(categories[category_index].name);
-          $('#editcat').dialog();
+          $('#editcat').dialog(dialog_effect);
         } else {
           if ($(this).attr('type') == 'sub') {
             $('body' ).data('sub_index', $(this).attr('data-index'));
             var getdata = $('body').data();
             var sub_index = getdata.sub_index;
             $('#sub_name1').val(unassigned_subcategories[sub_index].name);
-            $('#editsub').dialog();
+            $('#editsub').dialog(dialog_effect);
           } else if ($(this).attr('type') == 'item') {
             $('body' ).data('item_index', $(this).attr('data-index'));
             var getdata = $('body').data();
             var item_index = getdata.item_index;
             $('#file_name1').val(unassigned_items[item_index].title);
-            $('#editfile').dialog();
+            $('#editfile').dialog(dialog_effect);
           }
         }
       }
@@ -126,7 +127,7 @@ $('document').ready(function() {
           item = categories[$(this).attr('data-index')];
         }
         source = {
-          assigned: $(this).attr('assigned') == "true",
+          assigned: $(this).attr('assigned') == 'true',
           type: $(this).attr('type'),
           data: item
         };
@@ -144,7 +145,7 @@ $('document').ready(function() {
           item = categories[$(this).attr('data-index')];
         }
         target = {
-          assigned: $(this).attr('assigned') == "true",
+          assigned: $(this).attr('assigned') == 'true',
           type: $(this).attr('type'),
           data: item
         };
@@ -217,7 +218,7 @@ $('document').ready(function() {
       var sub_index = getdata.sub_index;
       $('#sub_name1').val(categories[category_index].subcategories[sub_index].name);
 
-      $('#editsub').dialog();
+      $('#editsub').dialog(dialog_effect);
     });
 
     $('.edit-item').click(function() {
@@ -229,7 +230,7 @@ $('document').ready(function() {
       var item_index = getdata.item_index;
       $('#file_name1').val(categories[category_index].items[item_index].title);
 
-      $('#editfile').dialog();
+      $('#editfile').dialog(dialog_effect);
     });
 
     var source, target;
@@ -317,7 +318,7 @@ $('document').ready(function() {
       var item_index = getdata.item_index;
       $('#file_name1').val(categories[category_index].subcategories[sub_index].items[item_index].title);
 
-      $('#editfile').dialog();
+      $('#editfile').dialog(dialog_effect);
     });
 
     var source, target;
@@ -365,29 +366,29 @@ $('document').ready(function() {
       if (source.type == 'category' && target.type == 'category') {
         url += '/category';
         data = {
-          asset_id: asset_id + "",
-          dragged_id: source.data.id + "",
-          dropped_id: target.data.id + ""
+          asset_id: asset_id + '',
+          dragged_id: source.data.id + '',
+          dropped_id: target.data.id + ''
         };
         callback = all;
       } else if (source.type == 'sub' && target.type == 'sub') {
         url += '/subcategory';
         data = {
-          parent_id: source.parent_id + "",
-          dragged_id: source.data.id + "",
-          dropped_id: target.data.id + ""
+          parent_id: source.parent_id + '',
+          dragged_id: source.data.id + '',
+          dropped_id: target.data.id + ''
         };
       } else if (source.type == 'item' && target.type == 'item') {
         url += '/item';
         data = {
-          category_id: source.parent_id + "",
-          dragged_id: source.data.id + "",
-          dropped_id: target.data.id + ""
+          category_id: source.parent_id + '',
+          dragged_id: source.data.id + '',
+          dropped_id: target.data.id + ''
         };
       }
       $.ajax({
         url: url,
-        contentType: "application/json",
+        contentType: 'application/json',
         type: 'post',
         data: JSON.stringify(data),
         success: function(res) {
@@ -622,7 +623,8 @@ $('document').ready(function() {
       processData: false,
       contentType: false,
       success: function(result) {
-        alert('Your file has been uploaded.');
+        // alert('Your file has been uploaded.');
+        $('#msg_info').modal();
         if (step == 2) {
           refreshAll(data);
         } else if (step == 1){
@@ -712,7 +714,7 @@ $('document').ready(function() {
   }
 
   $('.refresh-icon').click(function() {
-    if (step == 0)
+    if (step == 0) {
       refreshAll(all);
     } else if (step == 1) {
       refreshAll(sub);
@@ -823,7 +825,7 @@ $('.search-icon').click(function() {
 
 $('.newcat-icon').click(function() {
   $('#cat_name').val('');
-  $('#addcat').dialog();
+  $('#addcat').dialog(dialog_effect);
 });
 
 $('.newfile-icon').click(function() {
@@ -832,11 +834,12 @@ $('.newfile-icon').click(function() {
   $('#item_title').val('');
   $('#item_file').val('');
   $('#item_tags').val('');
-  $('#addfile').dialog();
+  $('#addfile').dialog(dialog_effect);
 });
 
 $('.newsub-icon').click(function() {
-    $('#addsub').dialog();
+    $('#sub_name').val('');
+    $('#addsub').dialog(dialog_effect);
 });
 
 function subnav(index) {
