@@ -1,4 +1,4 @@
-var API_HOST = 'http://192.168.0.124:3001';
+var API_HOST = 'http://54.186.1.104:3001';
 var asset_id = 1;
 var categories = [];
 var unassigned_subcategories = [];
