@@ -1,4 +1,4 @@
-var API_HOST = 'http://54.186.1.104:3001';
+var API_HOST = 'http://192.168.0.109:3001';
 var asset_id = 1;
 var categories = [];
 var unassigned_subcategories = [];
@@ -59,33 +59,42 @@ $('document').ready(function() {
 
     //unassigned subcategories
     for (i = 0; i < unassigned_subcategories.length; i++){
-      var size = unassigned_subcategories[i].items.length;
-      var inner_html = '<div class="dragit col-xs-12">' +
-          '<div class="col-xs-6 no-pad" type="sub" assigned="false" data-index="' + i + '">' +
-            '<img class="folder-icon" src="images/folder.png">' + unassigned_subcategories[i].name +
-          '</div>' +
-          '<div class="col-xs-4">' + unassigned_subcategories[i].createdAt + '</div>' +
-          '<div class="col-xs-2">' + size + ' Files</div>' +
-          '<img class="edit-icon" assigned="false" type="sub" data-index="' + i + '" src="images/edit.png">' +
-        '</div>';
+      if (unassigned_subcategories[i].deleted == false) {
+        var size = 0;
+        for (var k = 0; k < unassigned_subcategories[i].items.length; k++) {
+          if (unassigned_subcategories[i].items[k].deleted == false) {
+            size++;
+          }
+        }
+        var inner_html = '<div class="dragit col-xs-12">' +
+            '<div class="col-xs-6 no-pad" type="sub" assigned="false" data-index="' + i + '">' +
+              '<img class="folder-icon" src="images/folder.png">' + unassigned_subcategories[i].name +
+            '</div>' +
+            '<div class="col-xs-4">' + unassigned_subcategories[i].createdAt + '</div>' +
+            '<div class="col-xs-2">' + size + ' Files</div>' +
+            '<img class="edit-icon" assigned="false" type="sub" data-index="' + i + '" src="images/edit.png">' +
+          '</div>';
 
-      $('.uncontent').append(inner_html);
+        $('.uncontent').append(inner_html);
+      }
     }
 
     //unassigned items
-    for (i = 0; i < unassigned_items.length; i++){
-      // size = unassigned_items[i].filesize
-      var size  = '2M';
-      var inner_html = '<div class="dragit col-xs-12">' +
-          '<div class="col-xs-6 no-pad" type="item" assigned="false" data-index="' + i + '">' +
-            '<img class="folder-icon" src="images/pdficon.png">' + unassigned_items[i].title +
-          '</div>' +
-          '<div class="col-xs-4">' + unassigned_items[i].createdAt + '</div>' +
-          '<div class="col-xs-2">' + size + ' </div>' +
-          '<img class="edit-icon edit-item" assigned="false" type="item" data-index="' + i + '" src="images/edit.png">' +
-        '</div>';
+    for (i = 0; i < unassigned_items.length; i++) {
+      if (unassigned_items[i].deleted == false) {
+        // size = unassigned_items[i].filesize
+        var size  = '2M';
+        var inner_html = '<div class="dragit col-xs-12">' +
+            '<div class="col-xs-6 no-pad" type="item" assigned="false" data-index="' + i + '">' +
+              '<img class="folder-icon" src="images/pdficon.png">' + unassigned_items[i].title +
+            '</div>' +
+            '<div class="col-xs-4">' + unassigned_items[i].createdAt + '</div>' +
+            '<div class="col-xs-2">' + size + ' </div>' +
+            '<img class="edit-icon edit-item" assigned="false" type="item" data-index="' + i + '" src="images/edit.png">' +
+          '</div>';
 
-      $('.uncontent').append(inner_html);
+        $('.uncontent').append(inner_html);
+      }
     }
 
     $('.edit-icon').click(function() {
@@ -129,7 +138,8 @@ $('document').ready(function() {
         source = {
           assigned: $(this).attr('assigned') == 'true',
           type: $(this).attr('type'),
-          data: item
+          data: item,
+          category_index: $(this).attr('data-index')
         };
       }
     });
@@ -147,7 +157,8 @@ $('document').ready(function() {
         target = {
           assigned: $(this).attr('assigned') == 'true',
           type: $(this).attr('type'),
-          data: item
+          data: item,
+          category_index: $(this).attr('data-index')
         };
         same = false;
         dragAll(source, target, all);
@@ -157,7 +168,7 @@ $('document').ready(function() {
     $('body').droppable({
       drop: function() {
         if (same) {
-          refreshAll(all);
+          refreshList();
         }
         same = true;
       }
@@ -173,12 +184,14 @@ $('document').ready(function() {
 
     for (i = 0; i < category.subcategories.length; i++) {
       var size = 0;
-      for (k = 0; k < category.subcategories[i].items.length; k++) {
-        if (category.subcategories[i].items[k].deleted == false) {
-          size++;
+      if (category.subcategories[i].deleted == false && category.subcategories[i].type == 'categories') {
+        if (category.subcategories[i].items.length > 0) {
+          for (k = 0; k < category.subcategories[i].items.length; k++) {
+            if (category.subcategories[i].items[k].deleted == false) {
+              size++;
+            }
+          }
         }
-      }
-      if (category.subcategories[i].deleted == false) {
         var inner_html = '<div class="dragit col-xs-12">' +
             '<div class="col-xs-6 no-pad" type="sub" data-index="' + i + '" onclick="datanav(' + i + ')">' +
               '<img class="folder-icon" src="images/folder.png">' + category.subcategories[i].name +
@@ -247,7 +260,9 @@ $('document').ready(function() {
           assigned: true,
           parent_id: category.id,
           type: $(this).attr('type'),
-          data: item
+          data: item,
+          category_index: category_index,
+          sub_item_index: $(this).attr('data-index')
         };
       }
     });
@@ -264,7 +279,9 @@ $('document').ready(function() {
         target = {
           assigned: true,
           type: $(this).attr('type'),
-          data: item
+          data: item,
+          category_index: category_index,
+          sub_item_index: $(this).attr('data-index')
         };
         same = false;
         dragAll(source, target, sub);
@@ -274,7 +291,7 @@ $('document').ready(function() {
     $('body').droppable({
       drop: function() {
         if (same) {
-          refreshAll(sub);
+          refreshList();
         }
         same = true;
       }
@@ -330,7 +347,10 @@ $('document').ready(function() {
           parent_id: sub_category.id,
           assigned: true,
           type: 'item',
-          data: item
+          data: item,
+          category_index: category_index,
+          sub_index: sub_index,
+          item_index: $(this).attr('data-index')
         };
       }
     });
@@ -341,7 +361,10 @@ $('document').ready(function() {
         target = {
           assigned: true,
           type: 'item',
-          data: item
+          data: item,
+          category_index: category_index,
+          sub_index: sub_index,
+          item_index: $(this).attr('data-index')
         };
         same = false;
         dragAll(source, target, data);
@@ -351,7 +374,7 @@ $('document').ready(function() {
     $('body').droppable({
       drop: function() {
         if (same) {
-          refreshAll(data);
+          refreshList();
         }
         same = true;
       }
@@ -362,7 +385,7 @@ $('document').ready(function() {
     var url = API_HOST + '/api/v1/dragdrop';
     var data = {};
 
-    if (source.type == target.type && source.assigned == target.assigned == true) {
+    if (source.type == target.type && source.assigned == true && target.assigned == true) {
       if (source.type == 'category' && target.type == 'category') {
         url += '/category';
         data = {
@@ -392,10 +415,11 @@ $('document').ready(function() {
         type: 'post',
         data: JSON.stringify(data),
         success: function(res) {
-          refreshAll(callback);
+          // refreshAll(callback);
+          changeSort(source, target);
         }
       });
-    } else if (source.type == 'item' && target.type == 'sub' && source.assigned == target.assigned == true) {
+    } else if (source.type == 'item' && target.type == 'sub' && source.assigned == true && target.assigned == true) {
       var dragItem = {
         id: source.data.id,
         category: {
@@ -404,7 +428,8 @@ $('document').ready(function() {
         }
       }
       yao.updateItem(dragItem).then(function (result) {
-        refreshAll(callback);
+        // refreshAll(callback);
+        changeSort(source, target);
       }).catch(function (error) {
         alert('Can\'t update Item from API');
         console.log(error);
@@ -419,7 +444,8 @@ $('document').ready(function() {
         }
       }
       yao.updateItem(dragItem).then(function (result) {
-        refreshAll(callback);
+        // refreshAll(callback);
+        changeSort(source, target);
       }).catch(function (error) {
         alert('Can\'t update Item from API');
         console.log(error);
@@ -434,14 +460,114 @@ $('document').ready(function() {
         }
       }
       yao.updateCategory(dragSub).then(function (result) {
-        refreshAll(callback);
+        // refreshAll(callback);
+        changeSort(source, target);
       }).catch(function (error) {
         alert('Can\'t update Item from API');
         console.log(error);
       });
     } else {
-      refreshAll(callback);
+      // refreshAll(callback);
+      refreshList();
     }
+  }
+
+  function changeSort(source, target) {
+    if (source.type == target.type && source.assigned == target.assigned == true) {
+      if (source.type == 'category') {
+        var sci = source.category_index * 1, tci = target.category_index * 1;
+        if (sci < tci) {
+          for (var i = sci + 1; i <= tci; i++) {
+            var temp = categories[sci].sort;
+            categories[sci].sort = categories[i].sort;
+            categories[i].sort = temp;
+          }
+        } else {
+          for (var i = sci - 1; i >= tci; i--) {
+            var temp = categories[sci].sort;
+            categories[sci].sort = categories[i].sort;
+            categories[i].sort = temp;
+          }
+        }
+        categories = sortList(categories);
+      } else if (source.type == 'sub') {
+        var ssi = source.sub_item_index * 1, tsi = target.sub_item_index * 1;
+        var ci = source.category_index;
+        if (ssi < tsi) {
+          for (var i = ssi + 1; i <= tsi; i++) {
+            var temp = categories[ci].subcategories[ssi].sort;
+            categories[ci].subcategories[ssi].sort = categories[ci].subcategories[i].sort;
+            categories[ci].subcategories[i].sort = temp;
+          }
+        } else {
+          for (var i = ssi - 1; i >= tsi; i--) {
+            var temp = categories[ci].subcategories[ssi].sort;
+            categories[ci].subcategories[ssi].sort = categories[ci].subcategories[i].sort;
+            categories[ci].subcategories[i].sort = temp;
+          }
+        }
+        categories[ci].subcategories = sortList(categories[ci].subcategories);
+      } else if (source.type == 'item') {
+        if (step == 2) {
+          var sii = source.item_index * 1, tii = target.item_index * 1;
+          var ci = source.category_index, si = source.sub_item_index;
+          if (sii < tii) {
+            for (var i = sii + 1; i <= tii; i++) {
+              var temp = categories[ci].subcategories[si].items[sii].sort;
+              categories[ci].subcategories[si].items[sii].sort = categories[ci].subcategories[si].items[i].sort;
+              categories[ci].subcategories[si].items[i].sort = temp;
+            }
+          } else {
+            for (var i = sii - 1; i >= tii; i--) {
+              var temp = categories[ci].subcategories[si].items[sii].sort;
+              categories[ci].subcategories[si].items[sii].sort = categories[ci].subcategories[si].items[i].sort;
+              categories[ci].subcategories[si].items[i].sort = temp;
+            }
+          }
+          categories[ci].subcategories[si].items = sortList(categories[ci].subcategories[si].items);
+        } else if (step == 1) {
+          var sii = source.sub_item_index * 1, tii = target.sub_item_index * 1;
+          var ci = source.category_index;
+          if (sii < tii) {
+            for (var i = sii + 1; i <= tii; i++) {
+              var temp = categories[ci].items[sii].sort;
+              categories[ci].items[sii].sort = categories[ci].items[i].sort;
+              categories[ci].items[i].sort = temp;
+            }
+          } else {
+            for (var i = sii - 1; i >= tii; i--) {
+              var temp = categories[ci].items[sii].sort;
+              categories[ci].items[sii].sort = categories[ci].items[i].sort;
+              categories[ci].items[i].sort = temp;
+            }
+          }
+          categories[ci].items = sortList(categories[ci].items);
+        }
+      }
+    } else if (source.type == 'item' && target.type == 'sub' && source.assigned == target.assigned == true) {
+      var ci = source.category_index, si = target.sub_item_index, ii = source.sub_item_index;
+      categories[ci].subcategories[si].items.push(categories[ci].items[ii]);
+      categories[ci].items.splice(ii, 1);
+      categories[ci].subcategories[si].items = sortList(categories[ci].subcategories[si].items);
+      categories[ci].items = sortList(categories[ci].items);
+    } else if (source.type == 'item' && target.type == 'category') {
+      var ci = target.category_index, ii = source.category_index;
+      unassigned_items[ii].assigned = true;
+      categories[ci].items.push(unassigned_items[ii]);
+      unassigned_items.splice(ii, 1);
+      categories[ci].items = sortList(categories[ci].items);
+      unassigned_items = sortList(unassigned_items);
+    } else if (source.type == 'sub' && target.type == 'category') {
+      var ci = target.category_index, si = source.category_index;
+      unassigned_subcategories[si].assigned = true;
+      categories[ci].subcategories.push(unassigned_subcategories[si]);
+      unassigned_subcategories.splice(si, 1);
+      categories[ci].subcategories = sortList(categories[ci].subcategories);
+      unassigned_subcategories = sortList(unassigned_subcategories);
+    }
+    // categories = sortAll(categories);
+    drag = false;
+    refreshList();
   }
 
   function clearAll() {
@@ -460,7 +586,10 @@ $('document').ready(function() {
 
     yao.createCategory(asset_id, cat_name).then(function (result) {
       $('#addcat').dialog('close');
-      refreshAll(all);
+      categories.push(result);
+      categories = sortList(categories);
+      refreshList();
+      // refreshAll(all);
     }).catch(function (error) {
       alert('Can\'t create category from API');
       console.log(error);
@@ -482,7 +611,9 @@ $('document').ready(function() {
     }
     yao.updateCategory(newCat).then(function (result) {
       $('#editcat').dialog('close');
-      refreshAll(all);
+      categories[category_index].name = cat_name;
+      refreshList();
+      // refreshAll(all);
     }).catch(function (error) {
       alert('Can\'t update category from API');
       console.log(error);
@@ -501,7 +632,23 @@ $('document').ready(function() {
     };
     yao.updateCategory(delCat).then(function (result) {
       $('#editcat').dialog('close');
-      refreshAll(all);
+      if (categories[category_index].subcategories.length > 0) {
+        for (var i = 0; i < categories[category_index].subcategories.length; i++) {
+          categories[category_index].subcategories[i].assigned = false;
+          unassigned_subcategories.push(categories[category_index].subcategories[i]);
+        }
+        categories[category_index].subcategories.splice(0, categories[category_index].subcategories.length);
+      }
+      if (categories[category_index].items.length > 0) {
+        for (var i = 0; i < categories[category_index].items.length; i++) {
+          categories[category_index].items[i].assigned = false;
+          unassigned_items.push(categories[category_index].items[i]);
+        }
+        categories[category_index].items.splice(0, categories[category_index].items.length);
+      }
+      categories[category_index].deleted = true;
+      refreshList();
+      // refreshAll(all);
     }).catch(function (error) {
       alert('Can\'t delete category from API');
       console.log(error);
@@ -517,7 +664,10 @@ $('document').ready(function() {
 
     yao.createSubCategory(asset_id, category_id, sub_name).then(function (result) {
       $('#addsub').dialog('close');
-      refreshAll(sub);
+      categories[category_index].subcategories.push(result);
+      categories[category_index].subcategories = sortList(categories[category_index].subcategories);
+      refreshList();
+      // refreshAll(sub);
     }).catch(function (error) {
       alert('Can\'t create subcategory from API');
       console.log(error);
@@ -545,10 +695,16 @@ $('document').ready(function() {
     yao.updateCategory(newSub).then(function (result) {
       $('#editsub').dialog('close');
       if (step == 1) {
-        refreshAll(sub);
+        categories[category_index].subcategories[sub_index].name = sub_name;
       } else if (step == 0) {
-        refreshAll(all);
+        unassigned_subcategories[sub_index].name = sub_name;
       }
+      // if (step == 1) {
+      //   refreshAll(sub);
+      // } else if (step == 0) {
+      //   refreshAll(all);
+      // }
+      refreshList();
     }).catch(function (error) {
       alert('Can\'t update subcategory from API');
       console.log(error);
@@ -573,10 +729,29 @@ $('document').ready(function() {
     yao.updateCategory(delCat).then(function (result) {
       $('#editsub').dialog('close');
       if (step == 1) {
-        refreshAll(sub);
+        // refreshAll(sub);
+        categories[category_index].subcategories[sub_index].deleted = true;
+        if (categories[category_index].subcategories[sub_index].items.length > 0) {
+          for (var i = 0; i < categories[category_index].subcategories[sub_index].items.length; i++) {
+            categories[category_index].items.push(categories[category_index].subcategories[sub_index].items[i]);
+            // categories[category_index].subcategories[sub_index].items[i].parent_id = categories[category_index].id;
+          }
+          categories[category_index].items = sortList(categories[category_index].items);
+        }
       } else if (step == 0) {
-        refreshAll(all);
+        // refreshAll(all);
+        unassigned_subcategories[sub_index].deleted = true;
+        if (unassigned_subcategories[sub_index].items.length > 0) {
+          for (var i = 0; i < unassigned_subcategories[sub_index].items.length; i++) {
+            unassigned_subcategories[sub_index].items[i].assigned = false;
+            unassigned_items.push(unassigned_subcategories[sub_index].items[i]);
+          }
+          unassigned_subcategories[sub_index].deleted = true;
+          unassigned_subcategories.splice(sub_index, 1);
+          unassigned_subcategories[sub_index].items = sortList(unassigned_subcategories[sub_index].items);
+        }
       }
+      refreshList();
     }).catch(function (error) {
       alert('Can\'t delete subcategory from API');
       console.log(error);
@@ -667,12 +842,16 @@ $('document').ready(function() {
     yao.updateItem(item).then(function (result) {
       $('#editfile').dialog('close');
       if (step == 2) {
-        refreshAll(data);
+        categories[category_index].subcategories[sub_index].items[item_index].title = file_name;
+        // refreshAll(data);
       } else if (step == 1){
-        refreshAll(sub);
+        categories[category_index].items[item_index].title = file_name;
+        // refreshAll(sub);
       } else {
-        refreshAll(all);
+        unassigned_items[item_index].title = file_name;
+        // refreshAll(all);
       }
+      refreshList();
     }).catch(function (error) {
       alert('Can\'t update item from API');
       console.log(error);
@@ -702,12 +881,16 @@ $('document').ready(function() {
     yao.updateItem(delItem).then(function (result) {
       $('#editfile').dialog('close');
       if (step == 2) {
-        refreshAll(data);
+        // refreshAll(data);
+        categories[category_index].subcategories[sub_index].items[item_index].deleted = true;
       } else if (step == 1) {
-        refreshAll(sub);
+        // refreshAll(sub);
+        categories[category_index].items[item_index].deleted = true;
       } else if (step == 0) {
-        refreshAll(all);
+        // refreshAll(all);
+        unassigned_items[item_index].deleted = true;
       }
+      refreshList();
     }).catch(function (error) {
       alert('Can\'t delete item from API');
       console.log(error);
@@ -813,6 +996,18 @@ $('document').ready(function() {
       alert('Can\'t get categories from API');
       console.log(error);
     });
+  }
+
+  function refreshList() {
+    clearAll();
+    if (step == 0) {
+      all();
+    } else if (step == 1) {
+      sub();
+    } else if (step == 2) {
+      data();
+    }
+    drag = false;
   }
 
   refreshAll();
