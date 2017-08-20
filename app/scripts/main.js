@@ -781,7 +781,6 @@ $('document').ready(function() {
     var form = new FormData($('#addfile_form')[0]);
     var pdf_title = $('#item_title').val();
     var pdf_file = $('#item_file').val();
-    console.log(pdf_title+' '+pdf_file);
     if(pdf_title == ''){
       alert('Please input name');
       return false;
@@ -801,20 +800,29 @@ $('document').ready(function() {
       success: function(result) {
         // alert('Your file has been uploaded.');
         $('#msg_info').modal();
-        if (step == 2) {
-          refreshAll(data);
-        } else if (step == 1){
-          refreshAll(sub);
-        } else {
-          refreshAll(all);
-        }
+        console.log(result);
+        var item = {};
+        try {
+          item = result.data.attributes;
+          item['id'] = result.data.id;
+          if (step == 2) {
+            categories[category_index].subcategories[sub_index].items.push(item);
+            categories[category_index].subcategories[sub_index].items = sortList(categories[category_index].subcategories[sub_index].items);
+          } else if (step == 1){
+            categories[category_index].items.push(item);
+            categories[category_index].items = sortList(categories[category_index].items);
+          } else {
+            unassigned_items.push(item);
+            unassigned_items = sortList(unassigned_items);
+          }
+        } catch (e) {}
+        $('#addfile').dialog('close');
+        refreshList();
       },
       error: function(er) {
         alert('Can\'t create item from API');
       }
     });
-
-    $('#addfile').dialog('close');
   }
 
   $('#edit_file').click(editFile);
