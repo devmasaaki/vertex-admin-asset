@@ -473,98 +473,100 @@ $('document').ready(function() {
   }
 
   function changeSort(source, target) {
-    if (source.type == target.type && source.assigned == target.assigned == true) {
-      if (source.type == 'category') {
-        var sci = source.category_index * 1, tci = target.category_index * 1;
-        if (sci < tci) {
-          for (var i = sci + 1; i <= tci; i++) {
-            var temp = categories[sci].sort;
-            categories[sci].sort = categories[i].sort;
-            categories[i].sort = temp;
-          }
-        } else {
-          for (var i = sci - 1; i >= tci; i--) {
-            var temp = categories[sci].sort;
-            categories[sci].sort = categories[i].sort;
-            categories[i].sort = temp;
-          }
-        }
-        categories = sortList(categories);
-      } else if (source.type == 'sub') {
-        var ssi = source.sub_item_index * 1, tsi = target.sub_item_index * 1;
-        var ci = source.category_index;
-        if (ssi < tsi) {
-          for (var i = ssi + 1; i <= tsi; i++) {
-            var temp = categories[ci].subcategories[ssi].sort;
-            categories[ci].subcategories[ssi].sort = categories[ci].subcategories[i].sort;
-            categories[ci].subcategories[i].sort = temp;
-          }
-        } else {
-          for (var i = ssi - 1; i >= tsi; i--) {
-            var temp = categories[ci].subcategories[ssi].sort;
-            categories[ci].subcategories[ssi].sort = categories[ci].subcategories[i].sort;
-            categories[ci].subcategories[i].sort = temp;
-          }
-        }
-        categories[ci].subcategories = sortList(categories[ci].subcategories);
-      } else if (source.type == 'item') {
-        if (step == 2) {
-          var sii = source.item_index * 1, tii = target.item_index * 1;
-          var ci = source.category_index, si = source.sub_item_index;
-          if (sii < tii) {
-            for (var i = sii + 1; i <= tii; i++) {
-              var temp = categories[ci].subcategories[si].items[sii].sort;
-              categories[ci].subcategories[si].items[sii].sort = categories[ci].subcategories[si].items[i].sort;
-              categories[ci].subcategories[si].items[i].sort = temp;
+    try {
+      if (source.type == target.type && source.assigned == target.assigned == true) {
+        if (source.type == 'category') {
+          var sci = source.category_index * 1, tci = target.category_index * 1;
+          if (sci < tci) {
+            for (var i = sci + 1; i <= tci; i++) {
+              var temp = categories[sci].sort;
+              categories[sci].sort = categories[i].sort;
+              categories[i].sort = temp;
             }
           } else {
-            for (var i = sii - 1; i >= tii; i--) {
-              var temp = categories[ci].subcategories[si].items[sii].sort;
-              categories[ci].subcategories[si].items[sii].sort = categories[ci].subcategories[si].items[i].sort;
-              categories[ci].subcategories[si].items[i].sort = temp;
+            for (var i = sci - 1; i >= tci; i--) {
+              var temp = categories[sci].sort;
+              categories[sci].sort = categories[i].sort;
+              categories[i].sort = temp;
             }
           }
-          categories[ci].subcategories[si].items = sortList(categories[ci].subcategories[si].items);
-        } else if (step == 1) {
-          var sii = source.sub_item_index * 1, tii = target.sub_item_index * 1;
+          categories = sortList(categories);
+        } else if (source.type == 'sub') {
+          var ssi = source.sub_item_index * 1, tsi = target.sub_item_index * 1;
           var ci = source.category_index;
-          if (sii < tii) {
-            for (var i = sii + 1; i <= tii; i++) {
-              var temp = categories[ci].items[sii].sort;
-              categories[ci].items[sii].sort = categories[ci].items[i].sort;
-              categories[ci].items[i].sort = temp;
+          if (ssi < tsi) {
+            for (var i = ssi + 1; i <= tsi; i++) {
+              var temp = categories[ci].subcategories[ssi].sort;
+              categories[ci].subcategories[ssi].sort = categories[ci].subcategories[i].sort;
+              categories[ci].subcategories[i].sort = temp;
             }
           } else {
-            for (var i = sii - 1; i >= tii; i--) {
-              var temp = categories[ci].items[sii].sort;
-              categories[ci].items[sii].sort = categories[ci].items[i].sort;
-              categories[ci].items[i].sort = temp;
+            for (var i = ssi - 1; i >= tsi; i--) {
+              var temp = categories[ci].subcategories[ssi].sort;
+              categories[ci].subcategories[ssi].sort = categories[ci].subcategories[i].sort;
+              categories[ci].subcategories[i].sort = temp;
             }
           }
-          categories[ci].items = sortList(categories[ci].items);
+          categories[ci].subcategories = sortList(categories[ci].subcategories);
+        } else if (source.type == 'item') {
+          if (step == 2) {
+            var sii = source.item_index * 1, tii = target.item_index * 1;
+            var ci = source.category_index, si = source.sub_index;
+            if (sii < tii) {
+              for (var i = sii + 1; i <= tii; i++) {
+                var temp = categories[ci].subcategories[si].items[sii].sort;
+                categories[ci].subcategories[si].items[sii].sort = categories[ci].subcategories[si].items[i].sort;
+                categories[ci].subcategories[si].items[i].sort = temp;
+              }
+            } else {
+              for (var i = sii - 1; i >= tii; i--) {
+                var temp = categories[ci].subcategories[si].items[sii].sort;
+                categories[ci].subcategories[si].items[sii].sort = categories[ci].subcategories[si].items[i].sort;
+                categories[ci].subcategories[si].items[i].sort = temp;
+              }
+            }
+            categories[ci].subcategories[si].items = sortList(categories[ci].subcategories[si].items);
+          } else if (step == 1) {
+            var sii = source.sub_item_index * 1, tii = target.sub_item_index * 1;
+            var ci = source.category_index;
+            if (sii < tii) {
+              for (var i = sii + 1; i <= tii; i++) {
+                var temp = categories[ci].items[sii].sort;
+                categories[ci].items[sii].sort = categories[ci].items[i].sort;
+                categories[ci].items[i].sort = temp;
+              }
+            } else {
+              for (var i = sii - 1; i >= tii; i--) {
+                var temp = categories[ci].items[sii].sort;
+                categories[ci].items[sii].sort = categories[ci].items[i].sort;
+                categories[ci].items[i].sort = temp;
+              }
+            }
+            categories[ci].items = sortList(categories[ci].items);
+          }
         }
+      } else if (source.type == 'item' && target.type == 'sub' && source.assigned == target.assigned == true) {
+        var ci = source.category_index, si = target.sub_item_index, ii = source.sub_item_index;
+        categories[ci].subcategories[si].items.push(categories[ci].items[ii]);
+        categories[ci].items.splice(ii, 1);
+        categories[ci].subcategories[si].items = sortList(categories[ci].subcategories[si].items);
+        categories[ci].items = sortList(categories[ci].items);
+      } else if (source.type == 'item' && target.type == 'category') {
+        var ci = target.category_index, ii = source.category_index;
+        unassigned_items[ii].assigned = true;
+        categories[ci].items.push(unassigned_items[ii]);
+        unassigned_items.splice(ii, 1);
+        categories[ci].items = sortList(categories[ci].items);
+        unassigned_items = sortList(unassigned_items);
+      } else if (source.type == 'sub' && target.type == 'category') {
+        var ci = target.category_index, si = source.category_index;
+        unassigned_subcategories[si].assigned = true;
+        categories[ci].subcategories.push(unassigned_subcategories[si]);
+        unassigned_subcategories.splice(si, 1);
+        categories[ci].subcategories = sortList(categories[ci].subcategories);
+        unassigned_subcategories = sortList(unassigned_subcategories);
       }
-    } else if (source.type == 'item' && target.type == 'sub' && source.assigned == target.assigned == true) {
-      var ci = source.category_index, si = target.sub_item_index, ii = source.sub_item_index;
-      categories[ci].subcategories[si].items.push(categories[ci].items[ii]);
-      categories[ci].items.splice(ii, 1);
-      categories[ci].subcategories[si].items = sortList(categories[ci].subcategories[si].items);
-      categories[ci].items = sortList(categories[ci].items);
-    } else if (source.type == 'item' && target.type == 'category') {
-      var ci = target.category_index, ii = source.category_index;
-      unassigned_items[ii].assigned = true;
-      categories[ci].items.push(unassigned_items[ii]);
-      unassigned_items.splice(ii, 1);
-      categories[ci].items = sortList(categories[ci].items);
-      unassigned_items = sortList(unassigned_items);
-    } else if (source.type == 'sub' && target.type == 'category') {
-      var ci = target.category_index, si = source.category_index;
-      unassigned_subcategories[si].assigned = true;
-      categories[ci].subcategories.push(unassigned_subcategories[si]);
-      unassigned_subcategories.splice(si, 1);
-      categories[ci].subcategories = sortList(categories[ci].subcategories);
-      unassigned_subcategories = sortList(unassigned_subcategories);
-    }
+    } catch (e) {}
     // categories = sortAll(categories);
     drag = false;
     refreshList();
@@ -805,6 +807,9 @@ $('document').ready(function() {
         try {
           item = result.data.attributes;
           item['id'] = result.data.id;
+          item['createdAt'] = item['created-at'];
+          item['updatedAt'] = item['updated-at'];
+
           if (step == 2) {
             categories[category_index].subcategories[sub_index].items.push(item);
             categories[category_index].subcategories[sub_index].items = sortList(categories[category_index].subcategories[sub_index].items);
