@@ -83,13 +83,13 @@ $('document').ready(function() {
     for (i = 0; i < unassigned_items.length; i++) {
       if (unassigned_items[i].deleted == false) {
         // size = unassigned_items[i].filesize
-        var size  = '2M';
+        // var size  = '2M';
         var inner_html = '<div class="dragit col-xs-12">' +
             '<div class="col-xs-6 no-pad" type="item" assigned="false" data-index="' + i + '">' +
               '<img class="folder-icon" src="images/pdficon.png">' + unassigned_items[i].title +
             '</div>' +
             '<div class="col-xs-4">' + unassigned_items[i].createdAt + '</div>' +
-            '<div class="col-xs-2">' + size + ' </div>' +
+            '<div class="col-xs-2">' + unassigned_items[i].filesize + ' </div>' +
             '<img class="edit-icon edit-item" assigned="false" type="item" data-index="' + i + '" src="images/edit.png">' +
           '</div>';
 
@@ -206,7 +206,7 @@ $('document').ready(function() {
     }
 
     for (i = 0; i < category.items.length; i++) {
-      var size = '2M';
+      // var size = '2M';
       if (category.items[i].deleted == false) {
         var inner_html = '<div class="dragit col-xs-12">' +
             '<div class="col-xs-6 no-pad" type="item" data-index="' + i + '">' +
@@ -215,7 +215,7 @@ $('document').ready(function() {
               '</a>' +
             '</div>' +
             '<div class="col-xs-4">' + category.items[i].createdAt + '</div>' +
-            '<div class="col-xs-2">' + size + ' </div>' +
+            '<div class="col-xs-2">' + category.items[i].filesize + ' </div>' +
             '<img class="edit-icon edit-item" data-index="' + i + '" src="images/edit.png">' +
           '</div>';
 
