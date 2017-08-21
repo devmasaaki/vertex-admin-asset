@@ -48,7 +48,7 @@ $('document').ready(function() {
             '<div class="col-xs-6 no-pad assigned" type="category" assigned="true" data-index="' + i + '" onclick="subnav(' + i + ')">' +
               '<img class="folder-icon" src="images/folder.png">' + categories[i].name +
             '</div>' +
-            '<div class="col-xs-4">' + categories[i].createdAt + '</div>' +
+            '<div class="col-xs-4">' + categories[i].updatedAt + '</div>' +
             '<div class="col-xs-2">' + size + ' Files</div>' +
             '<img class="edit-icon" assigned="true" data-index="' + i + '" src="images/edit.png">' +
           '</div>';
@@ -70,7 +70,7 @@ $('document').ready(function() {
             '<div class="col-xs-6 no-pad" type="sub" assigned="false" data-index="' + i + '">' +
               '<img class="folder-icon" src="images/folder.png">' + unassigned_subcategories[i].name +
             '</div>' +
-            '<div class="col-xs-4">' + unassigned_subcategories[i].createdAt + '</div>' +
+            '<div class="col-xs-4">' + unassigned_subcategories[i].updatedAt + '</div>' +
             '<div class="col-xs-2">' + size + ' Files</div>' +
             '<img class="edit-icon" assigned="false" type="sub" data-index="' + i + '" src="images/edit.png">' +
           '</div>';
@@ -88,7 +88,7 @@ $('document').ready(function() {
             '<div class="col-xs-6 no-pad" type="item" assigned="false" data-index="' + i + '">' +
               '<img class="folder-icon" src="images/pdficon.png">' + unassigned_items[i].title +
             '</div>' +
-            '<div class="col-xs-4">' + unassigned_items[i].createdAt + '</div>' +
+            '<div class="col-xs-4">' + unassigned_items[i].updatedAt + '</div>' +
             '<div class="col-xs-2">' + unassigned_items[i].filesize + ' </div>' +
             '<img class="edit-icon edit-item" assigned="false" type="item" data-index="' + i + '" src="images/edit.png">' +
           '</div>';
@@ -98,6 +98,10 @@ $('document').ready(function() {
     }
 
     $('.edit-icon').click(function() {
+      // $(this).parent().parent().children().each(function() {
+      //   $(this).children()[0].style = '';
+      // })
+      // $(this).parent().children()[0].style = 'color: #f00';
       if (!drag) {
         if ($(this).attr('assigned') == 'true') {
           $('body' ).data('category_index', $(this).attr('data-index'));
@@ -196,7 +200,7 @@ $('document').ready(function() {
             '<div class="col-xs-6 no-pad" type="sub" data-index="' + i + '" onclick="datanav(' + i + ')">' +
               '<img class="folder-icon" src="images/folder.png">' + category.subcategories[i].name +
             '</div>' +
-            '<div class="col-xs-4">' + category.subcategories[i].createdAt + '</div>' +
+            '<div class="col-xs-4">' + category.subcategories[i].updatedAt + '</div>' +
             '<div class="col-xs-2">' + size + ' Files</div>' +
             '<img class="edit-icon edit-sub" data-index="' + i + '" src="images/edit.png">' +
           '</div>';
@@ -214,7 +218,7 @@ $('document').ready(function() {
                 '<img class="folder-icon" src="images/pdficon.png">' + category.items[i].title +
               '</a>' +
             '</div>' +
-            '<div class="col-xs-4">' + category.items[i].createdAt + '</div>' +
+            '<div class="col-xs-4">' + category.items[i].updatedAt + '</div>' +
             '<div class="col-xs-2">' + category.items[i].filesize + ' </div>' +
             '<img class="edit-icon edit-item" data-index="' + i + '" src="images/edit.png">' +
           '</div>';
@@ -310,14 +314,14 @@ $('document').ready(function() {
 
     for (i = 0; i < sub_category.items.length; i++) {
       if (sub_category.items[i].deleted == false) {
-        var size = sub_category.items[i].size ? sub_category.items[i].size : '2M';
+        var size = sub_category.items[i].filesize ? sub_category.items[i].filesize : '2M';
         var inner_html = '<div class="dragit col-xs-12">' +
             '<div class="col-xs-6 no-pad" data-index="' + i + '">' +
               '<a href="' + sub_category.items[i].file.url + '">' +
                 '<img class="folder-icon" src="images/pdficon.png">' + sub_category.items[i].title +
               '</a>' +
             '</div>' +
-            '<div class="col-xs-4">' + sub_category.items[i].createdAt + '</div>' +
+            '<div class="col-xs-4">' + sub_category.items[i].updatedAt + '</div>' +
             '<div class="col-xs-2">' + size + '</div>' +
             '<img class="edit-icon" data-index="' + i + '" src="images/edit.png">' +
           '</div>';
@@ -429,10 +433,15 @@ $('document').ready(function() {
       }
       yao.updateItem(dragItem).then(function (result) {
         // refreshAll(callback);
+        if(result){
+          source.data.sort = result.sort;
+          source.data.updatedAt = result.updatedAt;
+        }
         changeSort(source, target);
       }).catch(function (error) {
         alert('Can\'t update Item from API');
         console.log(error);
+        refreshList();
       });
     } else if (source.type == 'item' && target.type == 'category') {
       var dragItem = {
@@ -445,10 +454,15 @@ $('document').ready(function() {
       }
       yao.updateItem(dragItem).then(function (result) {
         // refreshAll(callback);
+        if(result){
+          source.data.sort = result.sort;
+          source.data.updatedAt = result.updatedAt;
+        }        
         changeSort(source, target);
       }).catch(function (error) {
         alert('Can\'t update Item from API');
         console.log(error);
+        refreshList();
       });
     } else if (source.type == 'sub' && target.type == 'category') {
       var dragSub = {
@@ -461,10 +475,15 @@ $('document').ready(function() {
       }
       yao.updateCategory(dragSub).then(function (result) {
         // refreshAll(callback);
+        if(result){
+          source.data.sort = result.sort;
+          source.data.updatedAt = result.updatedAt;
+        }
         changeSort(source, target);
       }).catch(function (error) {
         alert('Can\'t update Item from API');
         console.log(error);
+        refreshList();
       });
     } else {
       // refreshAll(callback);
@@ -595,6 +614,7 @@ $('document').ready(function() {
     }).catch(function (error) {
       alert('Can\'t create category from API');
       console.log(error);
+      refreshList();
     });
   }
 
@@ -613,12 +633,16 @@ $('document').ready(function() {
     }
     yao.updateCategory(newCat).then(function (result) {
       $('#editcat').dialog('close');
+      if(result){
+        categories[category_index].updatedAt = result.updatedAt;
+      }
       categories[category_index].name = cat_name;
       refreshList();
       // refreshAll(all);
     }).catch(function (error) {
       alert('Can\'t update category from API');
       console.log(error);
+      refreshList();
     });
   }
 
@@ -654,6 +678,7 @@ $('document').ready(function() {
     }).catch(function (error) {
       alert('Can\'t delete category from API');
       console.log(error);
+      refreshList();
     });
   }
 
@@ -673,6 +698,7 @@ $('document').ready(function() {
     }).catch(function (error) {
       alert('Can\'t create subcategory from API');
       console.log(error);
+      refreshList();
     });
   }
 
@@ -698,8 +724,14 @@ $('document').ready(function() {
       $('#editsub').dialog('close');
       if (step == 1) {
         categories[category_index].subcategories[sub_index].name = sub_name;
+        if(result){
+          categories[category_index].subcategories[sub_index].updatedAt = result.updatedAt;
+        }
       } else if (step == 0) {
         unassigned_subcategories[sub_index].name = sub_name;
+        if(result){
+          unassigned_subcategories[sub_index].updatedAt = result.updatedAt;
+        }
       }
       // if (step == 1) {
       //   refreshAll(sub);
@@ -710,6 +742,7 @@ $('document').ready(function() {
     }).catch(function (error) {
       alert('Can\'t update subcategory from API');
       console.log(error);
+      refreshList();
     });
   }
 
@@ -757,6 +790,7 @@ $('document').ready(function() {
     }).catch(function (error) {
       alert('Can\'t delete subcategory from API');
       console.log(error);
+      refreshList();
     });
   }
 
@@ -856,19 +890,31 @@ $('document').ready(function() {
       $('#editfile').dialog('close');
       if (step == 2) {
         categories[category_index].subcategories[sub_index].items[item_index].title = file_name;
+        if(result.updatedAt){
+          categories[category_index].subcategories[sub_index].items[item_index].updatedAt = result.updatedAt;
+        }
         // refreshAll(data);
       } else if (step == 1){
         categories[category_index].items[item_index].title = file_name;
+        if(result.updatedAt){
+          categories[category_index].items[item_index].updatedAt = result.updatedAt;
+        }
         // refreshAll(sub);
       } else {
         unassigned_items[item_index].title = file_name;
+        if(result.updatedAt){
+          unassigned_items[item_index].updatedAt = result.updatedAt;
+        }
         // refreshAll(all);
       }
       refreshList();
+      
     }).catch(function (error) {
       alert('Can\'t update item from API');
       console.log(error);
+      refreshList();
     });
+
   }
 
   $('#delete_file').click(deleteItem);
@@ -907,6 +953,7 @@ $('document').ready(function() {
     }).catch(function (error) {
       alert('Can\'t delete item from API');
       console.log(error);
+      refreshList();
     });
   }
 
