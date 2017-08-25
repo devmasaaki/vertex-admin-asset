@@ -1,4 +1,4 @@
-var API_HOST = 'http://192.168.0.109:3001';
+var API_HOST = 'http://54.202.144.125:3001';
 var asset_id = 1;
 var categories = [];
 var unassigned_subcategories = [];
@@ -6,7 +6,7 @@ var unassigned_items = [];
 var yao = new Yao.YaoApi();
 var step = 0;
 var drag = false;
-var dialog_effect = { modal: true, show: {effect: 'fade', duration: 500}, hide:{effect: 'explode', duration: 500}};
+var dialog_effect = { modal: true, show: {effect: 'scale', duration: 200}, hide:{effect: 'scale', duration: 250}};
 $('body' ).data('asset_id', 1);
 
 $('document').ready(function() {
@@ -826,6 +826,8 @@ $('document').ready(function() {
       return false;
     }
 
+    $('#addfile').dialog('close');
+    
     $.ajax({
       url: API_HOST + '/api/v1/items',
       method: 'POST',
@@ -855,7 +857,7 @@ $('document').ready(function() {
             unassigned_items = sortList(unassigned_items);
           }
         } catch (e) {}
-        $('#addfile').dialog('close');
+        // $('#addfile').dialog('close');
         refreshList();
       },
       error: function(er) {
