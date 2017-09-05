@@ -1,6 +1,5 @@
 // generated on 2016-06-08 using generator-webapp 2.1.0
 const gulp = require('gulp');
-//const babel = require('gulp-babel');
 const gulpLoadPlugins = require('gulp-load-plugins');
 const browserSync = require('browser-sync');
 const del = require('del');
@@ -14,19 +13,17 @@ const reload = browserSync.reload;
 // import runSequence from 'run-sequence';
 // import itBuild from 'gulp-it-build';
 const runSequence = require('run-sequence');
-// const itBuild = require('gulp-it-build');
 const gulpIf = require('gulp-if');
 
+// const itBuild = require('gulp-it-build');
 // Brochure configs
-/*
-itBuild(gulp, {
-  brochureName: 'Policy-Toolkit',
-  nextiComponents: 'nexti_components/',
-  webpages: 'dist/',
-  dest: 'brochure/',
-  browsers: false
-});
-*/
+// itBuild(gulp, {
+//   brochureName: 'Policy-Toolkit',
+//   nextiComponents: 'nexti_components/',
+//   webpages: 'dist/',
+//   dest: 'brochure/',
+//   browsers: false
+// });
 
 // `itBuildPrepare` Tasks per environment
 // gulp.task('itBuildPrepare:test', function() {
@@ -223,19 +220,19 @@ gulp.task('build', ['lint', 'html', 'images', 'fonts','resources', 'extras', 'ba
   return gulp.src('dist/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
-gulp.task('default', ['clean'], () => {
-  gulp.start('build');
-});
+// gulp.task('default', ['clean'], () => {
+//   gulp.start('build');
+// });
 
 
 // WEB APP 2.1, !!VINCENT!!
 
 // Build Tasks
-// gulp.task('testSam', function() {
-//   runSequence('clean', 'itBuildPrepare:test', 'build', 'itBuild');
-// });
+gulp.task('testSam', function() {
+  runSequence('clean', 'build');
+});
 
-// gulp.task('default', function() {
-//   runSequence('clean', 'itBuildPrepare:prod', 'build', 'itBuild');
-// });
+gulp.task('default', function() {
+  runSequence('clean', 'build');
+});
 /////////////////////////////

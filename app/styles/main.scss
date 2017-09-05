@@ -243,3 +243,12 @@ input[type=search] {
   background-color: inherit !important;
   border: none; 
 }
+
+.asset {
+  margin-bottom: 30px;
+  .icons {
+    max-width: 200px;
+    width: 100%;
+    height: auto;
+  }
+}

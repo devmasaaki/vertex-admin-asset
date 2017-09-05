@@ -35,7 +35,8 @@
       <img class="back-icon" src="images/back.png" onclick="back()">
       <img class="search-icon" src="images/search.png">
       <img class="refresh-icon" src="images/refresh.png">
-      <h1>Administrator</h1>
+      <h1>Administrator</h1> 
+      <!-- <a id="route"> 1 </a><a id="data"> 1 </a> -->
     </header>
     <div class="form-group searchbox">
       <input type="search" class="form-control" id="usr" placeholder="Search">
@@ -47,8 +48,17 @@
 
     <section data-route="main" id="asset_list">
       <center>
-        <div class="col-xs-6">
-         <a href="#/all"><img class="icons" src="images/icon-gapp.png"><div>GAPP Toolkit</div></a>
+        <div class="col-xs-6 asset">
+         <a href="#/1/all"><img class="icons" src="images/icon-gapp.png"><div>Asset 1</div></a>
+        </div>
+        <div class="col-xs-6  asset">          
+         <a href="#/2/all"><img class="icons" src="images/icon-gapp.png"><div>Asset 2</div></a>
+        </div>
+        <div class="col-xs-6  asset">       
+         <a href="#/3/all"><img class="icons" src="images/icon-gapp.png"><div>Asset 3</div></a>
+        </div>
+        <div class="col-xs-6  asset">     
+         <a href="#/4/all"><img class="icons" src="images/icon-gapp.png"><div>Asset 4</div></a>
         </div>
       </center>
     </section>
@@ -96,7 +106,8 @@
         </div>
 
         <div class="col-xs-12">
-          <h3 class="head1"><a href="#/all">All files</a> > <span class="subhead"></span></h3>
+          <!-- <h3 class="head1"><a href="#/all">All files</a> > </h3> -->
+          <h3 id="header-sub" class="head2"></h3>
         </div>
 
         <div class="col-xs-6 topbartext">Name<img class="arrowdown-icon" src="images/arrow-down.png">
@@ -123,7 +134,8 @@
         </div>
 
         <div class="col-xs-12">
-          <h3 class="head1"><a href="#/all">All files</a> > <span class="datahead"></span></h3>
+          <!-- <h3 class="head3"><a href="#/all">All files</a> > <span class="datahead"></span></h3> -->
+          <h3 id="header-data" class="head3"></h3>
         </div>
 
         <div class="col-xs-6 topbartext">Name<img class="arrowdown-icon" src="images/arrow-down.png">

@@ -1,4 +1,4 @@
-var API_HOST = 'http://54.202.144.125:3001';
+var API_HOST = 'https://vertexpolicytoolkit.interact.technology';
 var asset_id = 1;
 var categories = [];
 var unassigned_subcategories = [];
@@ -6,8 +6,11 @@ var unassigned_items = [];
 var yao = new Yao.YaoApi();
 var step = 0;
 var drag = false;
-var dialog_effect = { modal: true, show: {effect: 'scale', duration: 200}, hide:{effect: 'scale', duration: 250}};
+var dialog_effect = { modal: true, show: {effect: 'scale', duration: 0}, hide:{effect: 'scale', duration: 0}};
+console.log(asset_id);
+
 $('body' ).data('asset_id', 1);
+
 
 $('document').ready(function() {
   function main() {
@@ -16,8 +19,11 @@ $('document').ready(function() {
     $('.refresh-icon').hide();
     $('.overlay').delay(500).fadeOut('slow', function() {});
   };
+  
 
   function all() {
+    // $('.head1').empty();
+    // $('.head1').append('<a href="#/'+asset_id+'/all">All files</a>' + ' > ' + '<span class="subhead"></span>');
     clearAll();
     $('.back-icon').show();
     $('.search-icon').show();
@@ -179,7 +185,31 @@ $('document').ready(function() {
     });
   };
 
+  function all1() {
+    all();
+  }
+  function all2() {
+    all();
+  }
+  function all3() {
+    all();
+  }
+  function all4() {
+    all();
+  }
+
   function sub() {
+    $('.subhead').empty();
+    $('.subcontent').empty();
+
+    $('#header-sub').empty();
+    $('#header-sub').append('<a href="#/'+asset_id+'/all">All files</a>' + ' > ' + '<span class="subhead"></span>');
+    $('#header-data').empty();
+    $('#header-data').append('<a href="#/'+asset_id+'/all">All files</a>' + ' > ' + '<span class="subhead"></span>' + ' > ' );
+
+    // $('.head1').append('<a href="#/all">All files</a>' +' > ');
+    //  <span class="subhead"></span>
+
     step = 1;
     var getcat = $( 'body' ).data();
     var category_index = getcat.category_index;
@@ -302,15 +332,42 @@ $('document').ready(function() {
     });
   };
 
+  function sub1() {
+    sub();
+  }
+  function sub2() {
+    sub();
+  }
+  function sub3() {
+    sub();
+  }
+  function sub4() {
+    sub();
+  }
+
+
   function data() {
+    $('.datacontent').empty();
+    $('.datahead').empty();
+
     step = 2;
     var getdata = $( 'body' ).data();
     var category_index = getdata.category_index;
     var sub_index = getdata.sub_index;
     var category = categories[category_index];
     var sub_category = category.subcategories[sub_index];
+   
 
-    $('.datahead').append('<a href="#/sub">' + category.name + '</a> > ' + sub_category.name);
+    $('#header-sub').empty();
+    $('#header-sub').append('<a href="#/'+asset_id+'/all">All files</a>' + ' > ' + '<span class="subhead"></span>');
+    $('#header-data').empty();
+    $('#header-data').append('<a href="#/'+asset_id+'/all">All files</a>' + ' > ' + '<a href="#/'+asset_id+'/sub">' + category.name + '</a> > ' + sub_category.name);
+
+   
+
+
+
+    // $('.datahead').append('<a href="#/'+asset_id+'/sub">' + category.name + '</a> > ' + sub_category.name);
 
     for (i = 0; i < sub_category.items.length; i++) {
       if (sub_category.items[i].deleted == false) {
@@ -384,6 +441,21 @@ $('document').ready(function() {
       }
     });
   };
+
+  function data1() {
+    data();
+  }
+  function data2() {
+    data();
+  }
+  function data3() {
+    data();
+  }
+  function data4() {
+    data();
+  }
+
+
 
   function dragAll(source, target, callback) {
     var url = API_HOST + '/api/v1/dragdrop';
@@ -605,6 +677,7 @@ $('document').ready(function() {
     var getdata = $('body').data();
     var cat_name = $('#cat_name').val();
 
+    console.log('add category', asset_id, cat_name);
     yao.createCategory(asset_id, cat_name).then(function (result) {
       $('#addcat').dialog('close');
       categories.push(result);
@@ -970,23 +1043,59 @@ $('document').ready(function() {
   })
 
   var allroutes = function() {
-    var route = window.location.hash.slice(2);
+    console.log('Whole url', window.location.hash);
+    var start = '#/'; var startIndex = window.location.hash.indexOf(start);
+    var data = window.location.hash.slice(startIndex+start.length,window.location.hash.length);
+    var main = data.indexOf('/');
+    if( main !== -1 ) {
+      route = data.slice(main+1, data.length);      
+      data = data.slice(0, main);
+      $('body' ).data('asset_id', data);
+    }
+    else {
+      route = data;
+      // data.slice(main, data.length);
+    }
+
+
+    // var route = window.location.hash.slice(4);
     var sections = $('section');
     var section;
+    console.log('route', route);
+    console.log('data', data);
+
+    // $('')
+
+    // refreshAll();
 
     section = sections.filter('[data-route=' + route + ']');
 
     if (section.length) {
-      sections.hide(250);
-      section.show(250);
+      sections.hide(0);
+      section.show(0);
     }
   };
 
   var routes = {
     '/main': main,
-    '/all': all,
-    '/sub': sub,
-    '/data': data
+    // '/all': all,
+    // '/sub': sub,
+    // '/data': data,
+    '/1/all': all1,
+    '/1/sub': sub1,
+    '/1/data': data1,
+
+    '/2/all': all2,
+    '/2/sub': sub2,
+    '/2/data': data2,
+
+    '/3/all': all3,
+    '/3/sub': sub3,
+    '/3/data': data3,
+
+    '/4/all': all4,
+    '/4/sub': sub4,
+    '/4/data': data4
   };
 
   var router = Router(routes);
@@ -1024,10 +1133,27 @@ $('document').ready(function() {
     return category_list;
   }
 
-  function refreshAll(callback) {
-    yao.assetData(asset_id).then(function (assetData) {
+  window.refreshAll = function(callback) {
+    console.log('window.asset_id', window.asset_id);
+    yao.assetData(window.asset_id).then(function (assetData) {
       categories = assetData.categories;
       categories = sortAll(categories);
+
+      console.log(categories);
+      for( var c = 0; c < categories.length; c++ ) {
+        for( var s = 0; s < categories[c].subcategories.length; s++ ) {
+            for( var si = 0; si < categories[c].subcategories[s].items.length; si++ ) {
+                var fileSI = categories[c].subcategories[s].items[si].file.url;
+                // console.log(fileSI);
+                categories[c].subcategories[s].items[si].file.url = API_HOST + fileSI;
+            } 
+        }
+        for( var i = 0; i < categories[c].items.length; i++ ) {
+            var fileI = categories[c].items[i].file.url;
+            // console.log(fileI);
+            categories[c].items[i].file.url = API_HOST + fileI;
+        } 
+    }  
 
       yao.getUnassignedSubCategories(asset_id).then(function (data) {
         unassigned_subcategories = data;
@@ -1055,10 +1181,26 @@ $('document').ready(function() {
       });
 
     }).catch(function (error) {
-      alert('Can\'t get categories from API');
-      console.log(error);
+      // alert('Can\'t get categories from API');
+      // alert(error);
+      if( error ) {
+        console.log(error);
+        if( error[0].title === 'Record not found' ) {
+          categories = [];
+          router.configure({
+            on: allroutes
+          });
+          router.init();
+        }
+        else {
+          alert('Cannot connect to server, please try again');
+        }
+      }
+      else {
+        alert('Cannot connect to server, please try again');
+      }
     });
-  }
+  };
 
   function refreshList() {
     clearAll();
@@ -1072,7 +1214,11 @@ $('document').ready(function() {
     drag = false;
   }
 
-  refreshAll();
+  window.refreshAll();
+  router.configure({
+    on: allroutes
+  });
+  router.init();
 });
 
 window.location = '#/main';
@@ -1103,14 +1249,14 @@ $('.newsub-icon').click(function() {
 function subnav(index) {
   if (!drag) {
     $('body' ).data('category_index', index);
-    window.location = '#/sub';
+    window.location = '#/'+asset_id+'/sub';
   }
 }
 
 function datanav(intodata) {
   if (!drag) {
     $('body' ).data('sub_index', intodata);
-    window.location = '#/data';
+    window.location = '#/'+asset_id+'/data';
   }
 }
 
@@ -1123,17 +1269,18 @@ function back() {
   $('.datahead').empty();
 
   var newloc = window.location.hash;
+  console.log('back', newloc);
 
-  if (newloc == '#/sub') {
-    window.location = '#/all';
+  if (newloc == '#/'+ asset_id +'/sub') {
+    window.location = '#/'+asset_id+'/all';
   }
 
-  if (newloc == '#/all') {
+  if (newloc == '#/'+asset_id+'/all') {
     window.location = '#/main';
   }
 
-  if (newloc == '#/data') {
-    window.location = '#/sub';
+  if (newloc == '#/'+asset_id+'/data') {
+    window.location = '#/'+asset_id+'/sub';
   }
 }
 
@@ -1150,27 +1297,101 @@ $(window).on('hashchange', function() {
 
   }
 
-  if (newloc == '#/all') {
+  if (newloc == '#/1/all') {
+    $('.content').empty();
     $('.subhead').empty();
     $('.subcontent').empty();
     $('.datacontent').empty();
     $('.datahead').empty();
-
+    window.asset_id = 1;
+    $('body' ).data('asset_id', window.asset_id);
+    window.refreshAll();
+  }
+  if (newloc == '#/2/all') {
+    $('.content').empty();
+    $('.subhead').empty();
+    $('.subcontent').empty();
+    $('.datacontent').empty();
+    $('.datahead').empty();
+    window.asset_id = 2;
+    $('body' ).data('asset_id', window.asset_id);
+    window.refreshAll();
+  }
+  if (newloc == '#/3/all') {
+    $('.subhead').empty();
+    $('.subcontent').empty();
+    $('.datacontent').empty();
+    $('.datahead').empty();
+    window.asset_id = 3;
+    $('body' ).data('asset_id', window.asset_id);
+    window.refreshAll();
+  }
+  if (newloc == '#/4/all') {
+    $('.subhead').empty();
+    $('.subcontent').empty();
+    $('.datacontent').empty();
+    $('.datahead').empty();
+    window.asset_id = 4;
+    $('body' ).data('asset_id', window.asset_id);
+    window.refreshAll();
   }
 
-  if (newloc == '#/sub') {
+  if (newloc == '#/1/sub') {
     $('.content').empty();
     $('.uncontent').empty();
     $('.datacontent').empty();
     $('.datahead').empty();
-
+    window.refreshAll();
+  }
+  if (newloc == '#/2/sub') {
+    $('.content').empty();
+    $('.uncontent').empty();
+    $('.datacontent').empty();
+    $('.datahead').empty();
+    window.refreshAll();
+  }
+  if (newloc == '#/3/sub') {
+    $('.content').empty();
+    $('.uncontent').empty();
+    $('.datacontent').empty();
+    $('.datahead').empty();
+    window.refreshAll();
+  }
+  if (newloc == '#/4/sub') {
+    $('.content').empty();
+    $('.uncontent').empty();
+    $('.datacontent').empty();
+    $('.datahead').empty();
+    window.refreshAll();
   }
 
-  if (newloc == '#/data') {
+  if (newloc == '#/1/data') {
     $('.content').empty();
     $('.uncontent').empty();
     $('.subhead').empty();
     $('.subcontent').empty();
+    window.refreshAll();
+  }
+  if (newloc == '#/2/data') {
+    $('.content').empty();
+    $('.uncontent').empty();
+    $('.subhead').empty();
+    $('.subcontent').empty();
+    window.refreshAll();
+  }
+  if (newloc == '#/3/data') {
+    $('.content').empty();
+    $('.uncontent').empty();
+    $('.subhead').empty();
+    $('.subcontent').empty();
+    window.refreshAll();
+  }
+  if (newloc == '#/4/data') {
+    $('.content').empty();
+    $('.uncontent').empty();
+    $('.subhead').empty();
+    $('.subcontent').empty();
+    window.refreshAll();
   }
 
 });
