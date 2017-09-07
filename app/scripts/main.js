@@ -1,5 +1,5 @@
 var API_HOST = 'https://vertexpolicytoolkit.interact.technology';
-var asset_id = 1;
+window.asset_id = 1;
 var categories = [];
 var unassigned_subcategories = [];
 var unassigned_items = [];
@@ -7,7 +7,7 @@ var yao = new Yao.YaoApi();
 var step = 0;
 var drag = false;
 var dialog_effect = { modal: true, show: {effect: 'scale', duration: 0}, hide:{effect: 'scale', duration: 0}};
-console.log(asset_id);
+console.log(window.asset_id);
 
 $('body' ).data('asset_id', 1);
 
@@ -203,9 +203,9 @@ $('document').ready(function() {
     $('.subcontent').empty();
 
     $('#header-sub').empty();
-    $('#header-sub').append('<a href="#/'+asset_id+'/all">All files</a>' + ' > ' + '<span class="subhead"></span>');
+    $('#header-sub').append('<a href="#/'+ window.asset_id +'/all">All files</a>' + ' > ' + '<span class="subhead"></span>');
     $('#header-data').empty();
-    $('#header-data').append('<a href="#/'+asset_id+'/all">All files</a>' + ' > ' + '<span class="subhead"></span>' + ' > ' );
+    $('#header-data').append('<a href="#/'+ window.asset_id +'/all">All files</a>' + ' > ' + '<span class="subhead"></span>' + ' > ' );
 
     // $('.head1').append('<a href="#/all">All files</a>' +' > ');
     //  <span class="subhead"></span>
@@ -359,9 +359,9 @@ $('document').ready(function() {
    
 
     $('#header-sub').empty();
-    $('#header-sub').append('<a href="#/'+asset_id+'/all">All files</a>' + ' > ' + '<span class="subhead"></span>');
+    $('#header-sub').append('<a href="#/'+ window.asset_id +'/all">All files</a>' + ' > ' + '<span class="subhead"></span>');
     $('#header-data').empty();
-    $('#header-data').append('<a href="#/'+asset_id+'/all">All files</a>' + ' > ' + '<a href="#/'+asset_id+'/sub">' + category.name + '</a> > ' + sub_category.name);
+    $('#header-data').append('<a href="#/'+ window.asset_id +'/all">All files</a>' + ' > ' + '<a href="#/'+ window.asset_id +'/sub">' + category.name + '</a> > ' + sub_category.name);
 
    
 
@@ -465,7 +465,7 @@ $('document').ready(function() {
       if (source.type == 'category' && target.type == 'category') {
         url += '/category';
         data = {
-          asset_id: asset_id + '',
+          asset_id: window.asset_id + '',
           dragged_id: source.data.id + '',
           dropped_id: target.data.id + ''
         };
@@ -677,8 +677,8 @@ $('document').ready(function() {
     var getdata = $('body').data();
     var cat_name = $('#cat_name').val();
 
-    console.log('add category', asset_id, cat_name);
-    yao.createCategory(asset_id, cat_name).then(function (result) {
+    console.log('add category', window.asset_id, cat_name);
+    yao.createCategory(window.asset_id, cat_name).then(function (result) {
       $('#addcat').dialog('close');
       categories.push(result);
       categories = sortList(categories);
@@ -762,7 +762,7 @@ $('document').ready(function() {
     var category_id = categories[category_index].id;
     var sub_name = $('#sub_name').val();
 
-    yao.createSubCategory(asset_id, category_id, sub_name).then(function (result) {
+    yao.createSubCategory(window.asset_id, category_id, sub_name).then(function (result) {
       $('#addsub').dialog('close');
       categories[category_index].subcategories.push(result);
       categories[category_index].subcategories = sortList(categories[category_index].subcategories);
@@ -885,7 +885,7 @@ $('document').ready(function() {
     if (step == 0) {
       $('#assigned').val(false);
     }
-    $('#asset_id').val(asset_id);
+    $('#asset_id').val(window.asset_id);
     $('#category_id').val(category_id);
     var form = new FormData($('#addfile_form')[0]);
     var pdf_title = $('#item_title').val();
@@ -1135,6 +1135,9 @@ $('document').ready(function() {
 
   window.refreshAll = function(callback) {
     console.log('window.asset_id', window.asset_id);
+
+    //
+    clearAll();
     yao.assetData(window.asset_id).then(function (assetData) {
       categories = assetData.categories;
       categories = sortAll(categories);
@@ -1154,21 +1157,21 @@ $('document').ready(function() {
             categories[c].items[i].file.url = API_HOST + fileI;
         } 
     }  
-
-      yao.getUnassignedSubCategories(asset_id).then(function (data) {
+    // ask Seiji if this api is returning valid data from asset # 
+      yao.getUnassignedSubCategories(window.asset_id).then(function (data) {
         unassigned_subcategories = data;
 
-        yao.getUnassignedItems(asset_id).then(function (data) {
+        yao.getUnassignedItems(window.asset_id).then(function (data) {
           unassigned_items = data;
           if (callback) {
             clearAll();
             callback();
             drag = false;
           } else {
-            router.configure({
-              on: allroutes
-            });
-            router.init();
+            // router.configure({
+            //   on: allroutes
+            // });
+            // router.init();
           }
         }).catch(function (error) {
           alert('Can\'t get UnassignedItems from API');
@@ -1183,14 +1186,15 @@ $('document').ready(function() {
     }).catch(function (error) {
       // alert('Can\'t get categories from API');
       // alert(error);
+      clearAll();
       if( error ) {
         console.log(error);
         if( error[0].title === 'Record not found' ) {
           categories = [];
-          router.configure({
-            on: allroutes
-          });
-          router.init();
+          // router.configure({
+          //   on: allroutes
+          // });
+          // router.init();
         }
         else {
           alert('Cannot connect to server, please try again');
@@ -1209,7 +1213,7 @@ $('document').ready(function() {
     } else if (step == 1) {
       sub();
     } else if (step == 2) {
-      data();
+      data(); 
     }
     drag = false;
   }
@@ -1249,14 +1253,14 @@ $('.newsub-icon').click(function() {
 function subnav(index) {
   if (!drag) {
     $('body' ).data('category_index', index);
-    window.location = '#/'+asset_id+'/sub';
+    window.location = '#/'+ window.asset_id +'/sub';
   }
 }
 
 function datanav(intodata) {
   if (!drag) {
     $('body' ).data('sub_index', intodata);
-    window.location = '#/'+asset_id+'/data';
+    window.location = '#/'+ asset_id +'/data';
   }
 }
 
@@ -1271,16 +1275,16 @@ function back() {
   var newloc = window.location.hash;
   console.log('back', newloc);
 
-  if (newloc == '#/'+ asset_id +'/sub') {
-    window.location = '#/'+asset_id+'/all';
+  if (newloc == '#/'+ window.asset_id +'/sub') {
+    window.location = '#/'+ window.asset_id +'/all';
   }
 
-  if (newloc == '#/'+asset_id+'/all') {
+  if (newloc == '#/'+ window.asset_id +'/all') {
     window.location = '#/main';
   }
 
-  if (newloc == '#/'+asset_id+'/data') {
-    window.location = '#/'+asset_id+'/sub';
+  if (newloc == '#/'+ asset_id +'/data') {
+    window.location = '#/'+ asset_id +'/sub';
   }
 }
 
