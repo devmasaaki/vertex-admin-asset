@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 var API_HOST = 'https://test-vertexpolicytoolkit.interact.technology';
+=======
+var API_HOST = 'http://localhost:3000';
+>>>>>>> Stashed changes
 window.asset_id = 1;
 var categories = [];
 var unassigned_subcategories = [];
@@ -132,6 +136,7 @@ $('document').ready(function() {
             var getdata = $('body').data();
             var item_index = getdata.item_index;
             $('#file_name1').val(unassigned_items[item_index].title);
+            $('#file_tags1').val(unassigned_items[item_index].tags);
             $('#editfile').dialog(dialog_effect);
           }
         }
@@ -322,6 +327,7 @@ $('document').ready(function() {
       var category_index = getdata.category_index;
       var item_index = getdata.item_index;
       $('#file_name1').val(categories[category_index].items[item_index].title);
+<<<<<<< Updated upstream
 
       $('#catselect').empty();
       console.log(categories);
@@ -334,6 +340,9 @@ $('document').ready(function() {
       }
 
 
+=======
+      $('#file_tags1').val(categories[category_index].items[item_index].tags);
+>>>>>>> Stashed changes
       $('#editfile').dialog(dialog_effect);
     });
 
@@ -493,7 +502,7 @@ $('document').ready(function() {
       var sub_index = getdata.sub_index;
       var item_index = getdata.item_index;
       $('#file_name1').val(categories[category_index].subcategories[sub_index].items[item_index].title);
-
+      $('#file_tags1').val(categories[category_index].subcategories[sub_index].items[item_index].tags);
       $('#editfile').dialog(dialog_effect);
     });
 
@@ -1132,24 +1141,28 @@ $('document').ready(function() {
 
     var item = {
       id: item_id,
-      title: file_name
+      title: file_name,
+      tags: file_tags
     }
     yao.updateItem(item).then(function (result) {
       $('#editfile').dialog('close');
       if (step == 2) {
         categories[category_index].subcategories[sub_index].items[item_index].title = file_name;
+        categories[category_index].subcategories[sub_index].items[item_index].tags = file_tags;
         if(result.updatedAt){
           categories[category_index].subcategories[sub_index].items[item_index].updatedAt = result.updatedAt;
         }
         // refreshAll(data);
       } else if (step == 1){
         categories[category_index].items[item_index].title = file_name;
+        categories[category_index].items[item_index].tags = file_tags;
         if(result.updatedAt){
           categories[category_index].items[item_index].updatedAt = result.updatedAt;
         }
         // refreshAll(sub);
       } else {
         unassigned_items[item_index].title = file_name;
+        unassigned_items[item_index].tags = file_tags;
         if(result.updatedAt){
           unassigned_items[item_index].updatedAt = result.updatedAt;
         }
