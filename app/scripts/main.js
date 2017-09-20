@@ -1,4 +1,4 @@
-var API_HOST = 'https://vertexpolicytoolkit.interact.technology';
+var API_HOST = 'https://test-vertexpolicytoolkit.interact.technology';
 window.asset_id = 1;
 var categories = [];
 var unassigned_subcategories = [];
@@ -30,11 +30,15 @@ $('document').ready(function() {
     $('.refresh-icon').show();
     step = 0;
 
+    
     for (i = 0; i < categories.length; i++) {
+      console.log(categories[i]);      
       var size = 0;
       for (k = 0; k < categories[i].items.length; k++) {
         if (categories[i].items[k].deleted == false) {
+
           size++;
+          
         }
       }
       for (j = 0; j < categories[i].subcategories.length; j++) {
@@ -44,6 +48,7 @@ $('document').ready(function() {
               size++;
             }
           }
+          
         }
         // size += categories[i].subcategories[j].items.length;
       }
@@ -257,6 +262,46 @@ $('document').ready(function() {
       }
     }
 
+    //unassigned subcategories
+    for (i = 0; i < unassigned_subcategories.length; i++){
+      if (unassigned_subcategories[i].deleted == false) {
+        var size = 0;
+        for (var k = 0; k < unassigned_subcategories[i].items.length; k++) {
+          if (unassigned_subcategories[i].items[k].deleted == false) {
+            size++;
+          }
+        }
+        var inner_html = '<div class="dragit col-xs-12">' +
+            '<div class="col-xs-6 no-pad" type="sub" assigned="false" data-index="' + i + '">' +
+              '<img class="folder-icon" src="images/folder.png">' + unassigned_subcategories[i].name +
+            '</div>' +
+            '<div class="col-xs-4">' + unassigned_subcategories[i].updatedAt + '</div>' +
+            '<div class="col-xs-2">' + size + ' Files</div>' +
+            '<img class="edit-icon" assigned="false" type="sub" data-index="' + i + '" src="images/edit.png">' +
+          '</div>';
+
+        $('.uncontent').append(inner_html);
+      }
+    }
+
+    //unassigned items
+    for (i = 0; i < unassigned_items.length; i++) {
+      if (unassigned_items[i].deleted == false) {
+        // size = unassigned_items[i].filesize
+        // var size  = '2M';
+        var inner_html = '<div class="dragit col-xs-12">' +
+            '<div class="col-xs-6 no-pad" type="item" assigned="false" data-index="' + i + '">' +
+              '<img class="folder-icon" src="images/pdficon.png">' + unassigned_items[i].title +
+            '</div>' +
+            '<div class="col-xs-4">' + unassigned_items[i].updatedAt + '</div>' +
+            '<div class="col-xs-2">' + unassigned_items[i].filesize + ' </div>' +
+            '<img class="edit-icon edit-item" assigned="false" type="item" data-index="' + i + '" src="images/edit.png">' +
+          '</div>';
+
+        $('.uncontent').append(inner_html);
+      }
+    }
+
     $('.edit-sub').click(function() {
       $('body' ).data('sub_index', $(this).attr('data-index'));
 
@@ -269,6 +314,7 @@ $('document').ready(function() {
     });
 
     $('.edit-item').click(function() {
+      console.log('EDIT ITEM');
       $('body' ).data('sub_index', -1);
       $('body' ).data('item_index', $(this).attr('data-index'));
 
@@ -276,6 +322,17 @@ $('document').ready(function() {
       var category_index = getdata.category_index;
       var item_index = getdata.item_index;
       $('#file_name1').val(categories[category_index].items[item_index].title);
+
+      $('#catselect').empty();
+      console.log(categories);
+      for (i = 0; i < categories.length; i++) {
+        console.log(categories[i]);      
+        $('#catselect').append($('<option>', {
+            value: categories[i].name,
+            text: categories[i].name
+        }));
+      }
+
 
       $('#editfile').dialog(dialog_effect);
     });
@@ -387,7 +444,48 @@ $('document').ready(function() {
       }
     }
 
+    // //unassigned subcategories
+    // for (i = 0; i < unassigned_subcategories.length; i++){
+    //   if (unassigned_subcategories[i].deleted == false) {
+    //     var size = 0;
+    //     for (var k = 0; k < unassigned_subcategories[i].items.length; k++) {
+    //       if (unassigned_subcategories[i].items[k].deleted == false) {
+    //         size++;
+    //       }
+    //     }
+    //     var inner_html = '<div class="dragit col-xs-12">' +
+    //         '<div class="col-xs-6 no-pad" type="sub" assigned="false" data-index="' + i + '">' +
+    //           '<img class="folder-icon" src="images/folder.png">' + unassigned_subcategories[i].name +
+    //         '</div>' +
+    //         '<div class="col-xs-4">' + unassigned_subcategories[i].updatedAt + '</div>' +
+    //         '<div class="col-xs-2">' + size + ' Files</div>' +
+    //         '<img class="edit-icon" assigned="false" type="sub" data-index="' + i + '" src="images/edit.png">' +
+    //       '</div>';
+
+    //     $('.uncontent').append(inner_html);
+    //   }
+    // }
+
+    //unassigned items
+    for (i = 0; i < unassigned_items.length; i++) {
+      if (unassigned_items[i].deleted == false) {
+        // size = unassigned_items[i].filesize
+        // var size  = '2M';
+        var inner_html = '<div class="dragit col-xs-12">' +
+            '<div class="col-xs-6 no-pad" type="item" assigned="false" data-index="' + i + '">' +
+              '<img class="folder-icon" src="images/pdficon.png">' + unassigned_items[i].title +
+            '</div>' +
+            '<div class="col-xs-4">' + unassigned_items[i].updatedAt + '</div>' +
+            '<div class="col-xs-2">' + unassigned_items[i].filesize + ' </div>' +
+            '<img class="edit-icon edit-item" assigned="false" type="item" data-index="' + i + '" src="images/edit.png">' +
+          '</div>';
+
+        $('.uncontent').append(inner_html);
+      }
+    }
+
     $('.edit-icon').click(function() {
+      console.log('EDIT ICON');
       $('body' ).data('item_index', $(this).attr('data-index'));
 
       var getdata = $('body').data();
@@ -938,7 +1036,82 @@ $('document').ready(function() {
       }
     });
   }
+  
+  $('#add_file_more').click(addFile);
+  function addFile() {
+    var getdata = $( 'body' ).data();
+    var category_index = getdata.category_index;
+    var sub_index = getdata.sub_index;
 
+    var category_id = null;
+    try {
+      category_id = categories[category_index].id;
+    } catch (e) {}
+
+    $('#assigned').val(true);
+    if (step == 2) {
+      category_id = categories[category_index].subcategories[sub_index].id;
+    }
+    if (step == 0) {
+      $('#assigned').val(false);
+    }
+    $('#asset_id').val(window.asset_id);
+    $('#category_id').val(category_id);
+    var form = new FormData($('#addfile_form')[0]);
+    var pdf_title = $('#item_title').val();
+    var pdf_file = $('#item_file').val();
+    if(pdf_title == ''){
+      alert('Please input name');
+      return false;
+    }
+    if(pdf_file == ''){
+      alert('Please choose pdf file to upload');
+      return false;
+    }
+
+    // $('#addfile').dialog('close');
+    $('#item_title').val('');
+    $('#item_file').val('');
+    $('#item_tags').val('');
+    
+    
+    $.ajax({
+      url: API_HOST + '/api/v1/items',
+      method: 'POST',
+      // dataType: 'json',
+      data: form,
+      processData: false,
+      contentType: false,
+      success: function(result) {
+        // alert('Your file has been uploaded.');
+        $('#msg_info').modal();
+        console.log(result);
+        var item = {};
+        try {
+          item = result.data.attributes;
+          item['id'] = result.data.id;
+          item['createdAt'] = item['created-at'];
+          item['updatedAt'] = item['updated-at'];
+
+          if (step == 2) {
+            categories[category_index].subcategories[sub_index].items.push(item);
+            categories[category_index].subcategories[sub_index].items = sortList(categories[category_index].subcategories[sub_index].items);
+          } else if (step == 1){
+            categories[category_index].items.push(item);
+            categories[category_index].items = sortList(categories[category_index].items);
+          } else {
+            unassigned_items.push(item);
+            unassigned_items = sortList(unassigned_items);
+          }
+        } catch (e) {}
+        // $('#addfile').dialog('close');
+        refreshList();
+      },
+      error: function(er) {
+        alert('Can\'t create item from API');
+      }
+    });
+  }
   $('#edit_file').click(editFile);
   function editFile() {
     var file_name = $('#file_name1').val();

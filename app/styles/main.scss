@@ -218,6 +218,11 @@ input[type=search] {
     to {transform:rotate(360deg);}
 }
 
+.overflow {
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;  
+}
+
 .overlay{
   width: 100%;
   height: 100%;
@@ -256,4 +261,8 @@ input[type=search] {
 
 section {
   margin-bottom: 100px;
+}
+
+.v-pane.ng-scope.ng-isolate-scope.is-expanded {
+  overflow: scroll !important;
 }

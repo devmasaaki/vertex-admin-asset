@@ -72,7 +72,7 @@
       </div>
 
       <div class="col-xs-12">
-        <h3 class="head1">All files</h3>
+        <h3 class="head1">Live materials</h3>
       </div>
 
         <div class="col-xs-6 topbartext">Name<img class="arrowdown-icon" src="images/arrow-down.png">
@@ -86,7 +86,7 @@
         </div>
 
       <div class="midbreak col-xs-12">
-        <h3 class="head2">Unassigned</h3>
+        <h3 class="head2">Unassigned materials</h3>
       </div>
 
       <div class="uncontent">
@@ -119,7 +119,12 @@
 
         <div class="subcontent col-xs-12">
         </div>
-
+        <div class="midbreak col-xs-12">
+          <h3 class="head2">Unassigned materials</h3>
+        </div>
+  
+        <div class="uncontent">
+        </div>
       </div>
 
     </section>
@@ -147,6 +152,12 @@
 
         <div class="datacontent col-xs-12">
         </div>
+        <div class="midbreak col-xs-12">
+            <h3 class="head2">Unassigned materials</h3>
+          </div>
+    
+          <div class="uncontent">
+          </div>
 
       </div>
     </section>
@@ -203,6 +214,13 @@
       </div>
 
       <div class="form-group">
+          <label for="catselect">Category:</label>
+          <select class="form-control" id="catselect"> 
+            <option disabled selected> please choose.. </option>
+          </select>
+      </div>
+
+      <div class="form-group">
         <label for="usr">Search Tags:</label>
         <textarea class="form-control" rows="5" id="file_tags1"></textarea>
         Seperate tags with a comma
@@ -215,7 +233,7 @@
     </div>
 
     <div id="addfile" title="Add file">
-      <form id="addfile_form" enctype="multipart/form-data" action="http://192.168.0.124:3001/api/v1/items" accept-charset="UTF-8" method="post">
+      <form id="addfile_form" enctype="multipart/form-data" action="https://test-vertexpolicytoolkit.interact.technology/api/v1/items" accept-charset="UTF-8" method="post">
         <!-- <input name="utf8" type="hidden" value="✓"><input type="hidden" name="authenticity_token" value="ZlJj8RgJwUFt1A9WgFCHkuGPXycFiUTp+2agCXlbzUj/iIMOWzgMTF5mujg+MEDhYtA8Y48b4f+Q6KeF1FISEg=="> -->
         <input type="hidden" name="item[asset_id]" id="asset_id">
         <input type="hidden" name="item[assigned]" id="assigned" value="true">
@@ -235,7 +253,12 @@
         </div>
       </form>
       <center>
-        <img class="save-icon" src="images/save.png" id="add_file">
+        <img class="save-icon" src="images/add.png" id="add_file_more">
+      </center>
+      <br>
+      <center>
+        <!-- <button id="add_file_more"> ADD MORE </button> -->
+        <img class="save-icon" src="images/save.png" id="add_file">        
       </center>
     </div>
 
