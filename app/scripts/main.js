@@ -161,6 +161,12 @@ $('document').ready(function() {
     });
 
     $('.no-pad').droppable({
+      over: function() {
+        $(this).parent().css('background', 'lightgreen');
+      },
+      out: function() {
+        $(this).parent().css('background', 'white');
+      },      
       drop: function() {
         var item;
         if ($(this).attr('type') == 'item') {

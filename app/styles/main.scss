@@ -189,8 +189,12 @@ input[type=search] {
   padding: 0;
   margin-top: 20px;
   font-size: 1.2em;
+  background-color: #FFFFFF;
 }
 
+.dragit:hover {
+  background-color:#EBF4FD;
+}
 .content{
   padding: 0;
 }
