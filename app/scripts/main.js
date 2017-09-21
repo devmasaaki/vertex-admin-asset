@@ -162,11 +162,20 @@ $('document').ready(function() {
 
     $('.no-pad').droppable({
       over: function() {
-        $(this).parent().css('background', 'lightgreen');
+        // conditional formatting 
+        // var item_type = $(this).attr('type');
+
+        // if (item_type == 'item') {
+        //   $(this).parent().css('background', 'red');
+        // } else if (item_type == 'sub'|| item_type == 'category') {
+        //   $(this).parent().css('background', 'lightgreen');
+        // }
+        $(this).parent().addClass('dragover');
       },
       out: function() {
-        $(this).parent().css('background', 'white');
+        $(this).parent().removeClass('dragover');
       },      
+
       drop: function() {
         var item;
         if ($(this).attr('type') == 'item') {
@@ -368,6 +377,13 @@ $('document').ready(function() {
 
     var same = true;
     $('.no-pad').droppable({
+      over: function() {
+        $(this).parent().addClass('dragover');
+      },
+      out: function() {
+        $(this).parent().removeClass('dragover');
+      },      
+       
       drop: function() {
         var item;
         if ($(this).attr('type') == 'item') {
@@ -523,6 +539,13 @@ $('document').ready(function() {
     });
 
     $('.no-pad').droppable({
+      over: function() {
+        $(this).parent().addClass('dragover');
+      },
+      out: function() {
+        $(this).parent().removeClass('dragover');
+      },      
+      
       drop: function() {
         var item = sub_category.items[$(this).attr('data-index')];
         target = {
